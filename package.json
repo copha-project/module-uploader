@@ -1,0 +1,11 @@
+{
+  "name": "module_uploader",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron ./src"
+  },
+  "devDependencies": {
+    "electron": "^16.0.6"
+  }
+}

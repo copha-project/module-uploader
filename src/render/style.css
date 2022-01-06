@@ -1,0 +1,10 @@
+.formBox{
+    display: flex;
+    flex-direction: column;
+}
+.inputItem{
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    margin: 10px;
+}
