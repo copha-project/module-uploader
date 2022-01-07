@@ -1,0 +1,43 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: auto;
+  max-width: 38rem;
+  padding: 2rem;
+  background-color: aquamarine;
+}
+
+.title{
+  display: flex;
+  justify-content: center;
+}
+
+.menu {
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+}
+.menu .signToken{
+  margin-left: 10px;
+}
+.formBox{
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid slategrey;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+}
+.inputItem{
+  display: flex;
+  justify-content: start;
+  flex-direction: row;
+  margin: 10px;
+}
+
+.inputItem label{
+  min-width: 100px;
+}
+
+.inputItem input{
+  min-width: 250px;
+}

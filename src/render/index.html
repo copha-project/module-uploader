@@ -3,29 +3,75 @@
   <head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+    <!-- <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
     <title>Copha Module Uploader</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="index.css">
+    <script src="index.js"></script>
   </head>
   <body>
-    <h1>Copha Module Uploader</h1>
+    <div class="title">
+      <h1>Copha Module Uploader</h1>
+    </div>
+    <div class="menu">
+      <input type="text" id="token" placeholder="输入Token">
+      <button class="signToken">验证 Token</button>
+    </div>
     <form action="#">
-        <div class="formBox">
-            <div class="inputItem">
-                <label>id</label>
-                <input type="text">
-            </div>
-            <div class="inputItem">
-                <label>token</label>
-                <input type="text">
-            </div>
-            <div class="inputItem">
-                <label>version</label>
-                <input type="text">
-            </div>
-            <button type="button">upload</button>
+      <div class="formBox">
+        <div class="inputItem">
+          <label>模块 ID</label>
+          <input type="text" name="moduleId" readonly>
         </div>
+        <div class="inputItem">
+          <label>名称</label>
+          <input type="text" name="moduleName" readonly>
+        </div>
+        <div class="inputItem">
+          <label>新版本号</label>
+          <input type="text" name="moduleVer">
+        </div>
+        <div class="inputItem">
+          <label>选择文件</label>
+          <input type="file" name="package">
+        </div>
+        <br>
+        <button type="button">upload</button>
+      </div>
     </form>
   </body>
+  <script>
+    function findElement(e){
+      return document.querySelector(e)
+    }
+    function signToken(){
+      const tokenDom = findElement('#token')
+      if(!tokenDom.value) alert("no token")
+      localStorage.setItem('token',tokenDom.value)
+    }
+
+    function upload(){
+      const token = localStorage.getItem('token')
+      const version = findElement('input[name=moduleVer]').value
+      const formData = new FormData()
+      formData.append("version",version)
+     
+      const fileDom = findElement('input[name=package]')
+      formData.append("package", fileDom.files[0])
+
+      uploadModule(formData, token)
+    }
+    
+    if(localStorage.getItem('token')){
+      findElement('#token').value = localStorage.getItem('token')
+      fetchIdByToken(localStorage.getItem('token')).then(id=>{
+        findElement('input[name=moduleId]').value = id
+        fetchModule(id).then(data=>{
+          findElement('input[name=moduleName]').value = data.name
+        }).catch(console.log)
+      })
+    }
+
+    findElement('.signToken').addEventListener('click',signToken)
+  </script>
 </html>
