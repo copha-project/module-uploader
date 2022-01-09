@@ -3,11 +3,10 @@
   <head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
-    <!-- <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://hub.copha.net 'unsafe-inline'"> -->
+    <!-- <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self' https://hub.copha.net 'unsafe-inline'"> -->
     <title>Copha Module Uploader</title>
     <link rel="stylesheet" href="index.css">
-    <script src="index.js"></script>
   </head>
   <body>
     <div class="title">
@@ -29,49 +28,23 @@
         </div>
         <div class="inputItem">
           <label>新版本号</label>
-          <input type="text" name="moduleVer">
+          <input type="text" name="moduleVer" placeholder="x.x.x">
         </div>
         <div class="inputItem">
           <label>选择文件</label>
-          <input type="file" name="package">
+          <input type="file" accept=".tar.gz" name="package">
+          <button type="button" name="package-verify">开始验证</button>
+        </div>
+        <div class="inputItem">
+          <button id="open-select-file">选择模块包</button>
+          <span id="selected-file"></span>
         </div>
         <br>
-        <button type="button">upload</button>
+        <button type="button" class="submit">upload</button>
       </div>
     </form>
   </body>
   <script>
-    function findElement(e){
-      return document.querySelector(e)
-    }
-    function signToken(){
-      const tokenDom = findElement('#token')
-      if(!tokenDom.value) alert("no token")
-      localStorage.setItem('token',tokenDom.value)
-    }
-
-    function upload(){
-      const token = localStorage.getItem('token')
-      const version = findElement('input[name=moduleVer]').value
-      const formData = new FormData()
-      formData.append("version",version)
-     
-      const fileDom = findElement('input[name=package]')
-      formData.append("package", fileDom.files[0])
-
-      uploadModule(formData, token)
-    }
-    
-    if(localStorage.getItem('token')){
-      findElement('#token').value = localStorage.getItem('token')
-      fetchIdByToken(localStorage.getItem('token')).then(id=>{
-        findElement('input[name=moduleId]').value = id
-        fetchModule(id).then(data=>{
-          findElement('input[name=moduleName]').value = data.name
-        }).catch(console.log)
-      })
-    }
-
-    findElement('.signToken').addEventListener('click',signToken)
-  </script>
+    require("./index.js");
+  </script>  
 </html>

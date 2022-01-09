@@ -1,6 +1,6 @@
 import { app, BrowserWindow, globalShortcut } from 'electron'
 import path from 'path'
-
+import './api'
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit()
@@ -15,7 +15,9 @@ const createWindow = (): void => {
     height: 600,
     width: 800,
     webPreferences: {
-      devTools: true
+      devTools: true,
+      nodeIntegration: true,
+      contextIsolation: false
     }
   })
 
