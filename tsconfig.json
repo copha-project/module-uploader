@@ -10,7 +10,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "paths": {
-      "*": ["node_modules/*"]
+      "*": ["*","src/types/*"]
     }
   },
   "include": [

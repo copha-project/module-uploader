@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
-    "start": "gulp & electron-forge start -l",
+    "start": "gulp",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
@@ -33,7 +33,8 @@
     "typescript": "^4.0.2"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "uni-utils": "^1.0.18"
   },
   "config": {
     "forge": {
