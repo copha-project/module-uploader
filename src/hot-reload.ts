@@ -2,12 +2,14 @@ const { app } = require('electron')
 const chokidar = require('chokidar')
 import gulp from "gulp"
 import fs from 'fs'
-const { spawn } = require('child_process')
+import os from 'os'
+import { spawn } from 'child_process'
 const merge = require('merge2')
 const ts = require("gulp-typescript")
 const appPath = app.getAppPath()
 const ignoredPaths = /node_modules|[/\\]\./
 
+const isWin32 = os.platform() === 'win32'
 const paths = {
   resource: ["./src/render/**/*"],
 }
@@ -41,10 +43,11 @@ const createMainReloadHandler = (eXecutable:string, hardResetMethod:any, eArgv: 
       .concat([appPath])
       .concat(aArgv || [])
     const child = spawn(eXecutable, args, {
-      detached: true,
-      stdio: 'inherit'
+      detached: false,
+      stdio: 'inherit',
+      shell: isWin32
     })
-    child.unref()
+    // child.unref()
     // Kamikaze!
 
     // In cases where an app overrides the default closing or quiting actions
@@ -90,10 +93,11 @@ export default function elecronReload (glob: any, options:any) {
 
 
   watcher.on('change', (file: string)=>{
-    if(file.match(/src\/render\//)){
+    console.log('file change: ',file);
+    if(file.match(/src[\/|\\]render[\/|\\]/)){
       gulp.series('copy-file')(renderReloadHandler)
     }
-    if(file.match(/src\/main\//)){
+    if(file.match(/src[\/|\\]main[\/|\\]/)){
       gulp.series('compile-main')(mainReloadHandler)
     }
   })

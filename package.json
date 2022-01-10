@@ -5,7 +5,7 @@
   "main": "dist/main/index.js",
   "scripts": {
     "start": "npm run build && electron-forge start",
-    "dev": "npm run build && cross-env NODE_ENV=development electron-forge start",
+    "dev": "gulp && cross-env NODE_ENV=development electron-forge start",
     "build": "gulp",
     "package": "electron-forge package",
     "make": "electron-forge make",
