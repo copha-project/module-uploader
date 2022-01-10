@@ -15,6 +15,6 @@ ipcMain.on('open-file-dialog',async (event,...args) => {
 })
 
 ipcMain.handle('check-file', async (event,...args)=>{
-    console.log(args);
+    console.log(args,123);
     return Utils.hash.getFileSha256(args[0])
 })

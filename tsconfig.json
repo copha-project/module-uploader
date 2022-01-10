@@ -4,7 +4,9 @@
     "module": "commonjs",
     "noImplicitAny": true,
     "sourceMap": true,
+    "declaration": true,
     "baseUrl": ".",
+    "rootDir": "src",
     "outDir": "dist",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -15,5 +17,8 @@
   },
   "include": [
     "src/**/*"
+  ],
+  "exclude": [
+    "src/render/**/*"
   ]
 }
