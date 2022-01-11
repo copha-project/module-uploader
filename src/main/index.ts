@@ -1,8 +1,9 @@
-import { app, BrowserWindow, globalShortcut } from 'electron'
+import electron, { app, BrowserWindow, globalShortcut }  from 'electron'
 import path from 'path'
 import { addDevOption, loadHotReload} from '../dev'
 import './api'
 import { isMac } from '../common'
+import { appIcon } from '../config'
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit()
@@ -15,14 +16,22 @@ loadHotReload()
 let mainWindow: BrowserWindow
 
 const createWindow = async () => {
-  const options = {
+  const options: electron.BrowserWindowConstructorOptions = {
     center: true,
     height: 600,
     width: 800,
+    minWidth: 600,
+    minHeight: 600,
+    icon: appIcon,
+    opacity: 0.99,
+    titleBarStyle: 'hidden',
+    show: false,
+    maximizable: false,
+    fullscreen: false,
     webPreferences: {
-      devTools: true,
-      nodeIntegration: true,
-      contextIsolation: false
+      devTools: false,
+      nodeIntegration: false,
+      contextIsolation: true
     }
   }
   addDevOption(options)
@@ -31,6 +40,8 @@ const createWindow = async () => {
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, '../render/index.html'))
+
+  mainWindow.once('ready-to-show',()=>mainWindow.show())
 
   globalShortcut.register('CommandOrControl+D', openDev)
   globalShortcut.register('CommandOrControl+R', reload)
