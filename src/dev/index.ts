@@ -4,10 +4,11 @@ import hotReload from './hot-reload'
 import { changeDisplayPosition, changeWebPreferences } from "./windowConfig"
 import { isDev } from '../common'
 
-export async function addDevOption(options: BrowserWindowConstructorOptions): Promise<BrowserWindowConstructorOptions> {
+export function addDevOption(options: BrowserWindowConstructorOptions): BrowserWindowConstructorOptions {
     if(isDev){
         options = Object.assign(options, changeDisplayPosition())
         options = Object.assign(options, changeWebPreferences())
+        options.resizable = true
     }
     return options
 }

@@ -11,9 +11,13 @@ export function changeDisplayPosition(){
             return {
                 x: externalDisplay.bounds.x + 50,
                 y: externalDisplay.bounds.y + 50
-                }
+            }
         }
-        return {}
+
+        return {
+            x: displays[0].bounds.x + 50,
+            y: displays[0].bounds.y + 550
+        }
     }
 }
 
