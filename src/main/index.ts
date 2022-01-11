@@ -1,25 +1,21 @@
 import { app, BrowserWindow, globalShortcut } from 'electron'
 import path from 'path'
-import hotReload from '../hot-reload'
+import { addDevOption, loadHotReload} from '../dev'
 import './api'
+import { isMac } from '../common'
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit()
 }
 
-console.log(`electron app running at ${process.env.NODE_ENV || "producting"} mode`);
+console.log(`electron app running at ${process.env.NODE_ENV || "producting"} mode.`);
 
-if(process.env.NODE_ENV === "development"){
-  hotReload(path.join(__dirname,'../../src'),{
-    electron: path.join(__dirname, '../../node_modules', '.bin', 'electron')
-  })
-}
+loadHotReload()
 
 let mainWindow: BrowserWindow
 
-const createWindow = (): void => {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
+const createWindow = async () => {
+  const options = {
     center: true,
     height: 600,
     width: 800,
@@ -28,7 +24,10 @@ const createWindow = (): void => {
       nodeIntegration: true,
       contextIsolation: false
     }
-  })
+  }
+  addDevOption(options)
+
+  mainWindow = new BrowserWindow(options)
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, '../render/index.html'))
@@ -54,7 +53,7 @@ app.on('ready', createWindow)
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+  if (!isMac) {
     app.quit()
   }
 })

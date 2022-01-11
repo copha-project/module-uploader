@@ -1,15 +1,14 @@
-const { app } = require('electron')
-const chokidar = require('chokidar')
+import { app } from 'electron'
+import chokidar from 'chokidar'
 import gulp from "gulp"
 import fs from 'fs'
-import os from 'os'
 import { spawn } from 'child_process'
-const merge = require('merge2')
-const ts = require("gulp-typescript")
+import { isWin32 } from "../common"
+import merge from 'merge2'
+import ts from "gulp-typescript"
 const appPath = app.getAppPath()
 const ignoredPaths = /node_modules|[/\\]\./
 
-const isWin32 = os.platform() === 'win32'
 const paths = {
   resource: ["./src/render/**/*"],
 }
