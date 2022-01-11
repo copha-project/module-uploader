@@ -1,4 +1,4 @@
-import { app, screen} from 'electron'
+import electron,{ app, screen } from 'electron'
 
 export function changeDisplayPosition(){
     if(app.isReady){
@@ -14,5 +14,15 @@ export function changeDisplayPosition(){
                 }
         }
         return {}
+    }
+}
+
+export function changeWebPreferences(): electron.BrowserWindowConstructorOptions {
+    return {
+        webPreferences:{
+            devTools: true,
+            nodeIntegration: true,
+            contextIsolation: false
+        }
     }
 }
