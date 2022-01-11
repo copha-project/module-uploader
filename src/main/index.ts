@@ -1,64 +1,21 @@
-import electron, { app, BrowserWindow, globalShortcut }  from 'electron'
-import path from 'path'
-import { addDevOption, loadHotReload} from '../dev'
+import { app, BrowserWindow }  from 'electron'
+import { loadHotReload} from '../dev'
 import './api'
 import { isMac } from '../common'
-import { appIcon } from '../config'
+import App from './app'
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit()
 }
 
-console.log(`electron app running at ${process.env.NODE_ENV || "producting"} mode.`);
+console.log(`electron app running at ${process.env.NODE_ENV || "producting"} mode.`)
 
 loadHotReload()
-
-let mainWindow: BrowserWindow
-
-const createWindow = async () => {
-  const options: electron.BrowserWindowConstructorOptions = {
-    center: true,
-    height: 600,
-    width: 800,
-    minWidth: 600,
-    minHeight: 600,
-    icon: appIcon,
-    opacity: 0.99,
-    titleBarStyle: 'hidden',
-    show: false,
-    maximizable: false,
-    fullscreen: false,
-    webPreferences: {
-      devTools: false,
-      nodeIntegration: false,
-      contextIsolation: true
-    }
-  }
-  addDevOption(options)
-
-  mainWindow = new BrowserWindow(options)
-
-  // and load the index.html of the app.
-  mainWindow.loadFile(path.join(__dirname, '../render/index.html'))
-
-  mainWindow.once('ready-to-show',()=>mainWindow.show())
-
-  globalShortcut.register('CommandOrControl+D', openDev)
-  globalShortcut.register('CommandOrControl+R', reload)
-}
-
-function openDev(){
-  mainWindow.webContents.openDevTools()
-}
-
-function reload(){
-  mainWindow.webContents.reload()
-}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', App.getInstance)
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -73,7 +30,7 @@ app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
+    App.getInstance()
   }
 })
 
