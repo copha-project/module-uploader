@@ -5,8 +5,10 @@ import { changeDisplayPosition, changeWebPreferences } from "./windowConfig"
 import { isDev } from '../common'
 
 export async function addDevOption(options: BrowserWindowConstructorOptions): Promise<BrowserWindowConstructorOptions> {
-    options = Object.assign(options, changeDisplayPosition())
-    options = Object.assign(options, changeWebPreferences())
+    if(isDev){
+        options = Object.assign(options, changeDisplayPosition())
+        options = Object.assign(options, changeWebPreferences())
+    }
     return options
 }
 
