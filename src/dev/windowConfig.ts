@@ -1,6 +1,6 @@
-import electron,{ app, screen } from 'electron'
+import electron,{ app, BrowserViewConstructorOptions, screen } from 'electron'
 
-export function changeDisplayPosition(){
+export function changeDisplayPosition(options: BrowserViewConstructorOptions){
     if(app.isReady){
         const displays = screen.getAllDisplays()
         const externalDisplay = displays.find((display) => {
@@ -21,12 +21,12 @@ export function changeDisplayPosition(){
     }
 }
 
-export function changeWebPreferences(): electron.BrowserWindowConstructorOptions {
+export function changeWebPreferences(options: BrowserViewConstructorOptions): electron.BrowserWindowConstructorOptions {
     return {
         webPreferences:{
+            ...options.webPreferences,
             devTools: true,
-            nodeIntegration: true,
-            contextIsolation: false
+            nodeIntegration: true
         }
     }
 }

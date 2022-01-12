@@ -6,8 +6,8 @@ import { isDev } from '../common'
 
 export function addDevOption(options: BrowserWindowConstructorOptions): BrowserWindowConstructorOptions {
     if(isDev){
-        options = Object.assign(options, changeDisplayPosition())
-        options = Object.assign(options, changeWebPreferences())
+        options = Object.assign(options, changeDisplayPosition(options))
+        options = Object.assign(options, changeWebPreferences(options))
         options.resizable = true
     }
     return options
