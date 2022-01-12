@@ -22,8 +22,8 @@ declare namespace uniUtils {
     function atob(s:string): string
     namespace hash {
         function sha1(s:string): string
-        function getFileSha256(filePath: string): string
-        function getFileMd5(filePath: string):string
-
+        function getFileSha256(filePath: string): Promise<string>
+        function getFileMd5(filePath: string): Promise<string>
+        function getFileHash(filePath: string, hashType: string): Promise<string>
     }
 }
