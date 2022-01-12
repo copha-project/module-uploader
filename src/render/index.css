@@ -15,6 +15,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 800px;
 }
 
 .title{
@@ -25,8 +26,9 @@ body {
 
 .menu {
   margin: 10px;
-  padding: 10px;
+  padding: 2px;
   display: flex;
+  justify-content: space-between;
 }
 .menu .signToken{
   margin-left: 10px;
@@ -51,5 +53,5 @@ body {
 }
 
 .inputItem input{
-  min-width: 250px;
+  min-width: 300px;
 }

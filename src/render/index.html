@@ -14,8 +14,11 @@
       <h1>Copha Module Uploader</h1>
     </div>
     <div class="menu">
-      <input type="text" id="token" placeholder="输入Token">
-      <button class="signToken">验证 Token</button>
+      <div>
+        <input type="text" id="token" placeholder="输入Token">
+        <button class="signToken">验证 Token</button>
+      </div>
+      <button id="open-select-file" type="button">加载模块包</button>
     </div>
     <form action="#">
       <div class="formBox">
@@ -32,13 +35,12 @@
           <input type="text" name="moduleVer" placeholder="x.x.x">
         </div>
         <div class="inputItem">
-          <label>选择文件</label>
-          <input type="file" accept=".tar.gz" name="package">
-          <button type="button" name="package-verify">开始验证</button>
+          <label>MD5</label>
+          <input type="text" name="hashMd5" placeholder="xxx">
         </div>
         <div class="inputItem">
-          <button id="open-select-file">选择模块包</button>
-          <span id="selected-file"></span>
+          <label>SHA1</label>
+          <input type="text" name="hashSha1" placeholder="xxx">
         </div>
         <br>
         <button type="button" class="submit">upload</button>
@@ -46,7 +48,5 @@
     </form>
   </div>
   </body>
-  <script>
-    require("./index.js");
-  </script>  
+  <script src="./index.js"></script>
 </html>
