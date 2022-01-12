@@ -1,12 +1,13 @@
-import { BrowserWindowConstructorOptions, BrowserWindow, globalShortcut } from "electron"
+import { BrowserWindowConstructorOptions, BrowserWindow, globalShortcut, app } from "electron"
 import { addDevOption } from "../dev"
 import { getOptions } from "./config"
 import path from 'path'
-
-export default class App {
+import Invoke from "./invoke"
+export default class App extends Invoke {
     static instance: App
     public mainWindow:BrowserWindow
     constructor(){
+        super()
         this.createWindow()
         this.mainWindow.loadFile(path.join(__dirname, '../render/index.html'))
         this.mainWindow.once('ready-to-show',()=>this.mainWindow.show())
@@ -27,6 +28,7 @@ export default class App {
 
     createWindow(){
         const options = addDevOption(this.browserWindowOptions)
+        console.log(options);
         this.mainWindow = new BrowserWindow(options)
     }
 

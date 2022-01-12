@@ -1,5 +1,6 @@
-import { BrowserWindowConstructorOptions } from "electron"
+import { BrowserWindowConstructorOptions,app } from "electron"
 import { appIcon } from '../constants'
+import path from 'path'
 import { isMac, isWin32 } from "../common"
 const baseOptions: BrowserWindowConstructorOptions = {
     center: true,
@@ -14,7 +15,8 @@ const baseOptions: BrowserWindowConstructorOptions = {
     webPreferences: {
       devTools: false,
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
     }
 }
 

@@ -1,6 +1,5 @@
 import { app, BrowserWindow }  from 'electron'
 import { loadHotReload} from '../dev'
-import './api'
 import { isMac } from '../common'
 import App from './app'
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
