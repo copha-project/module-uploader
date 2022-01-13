@@ -3,23 +3,25 @@ import { addDevOption } from "../dev"
 import { getOptions } from "./config"
 import path from 'path'
 import Invoke from "./invoke"
+import { setAppMenu } from "./menu"
+import { isDev } from "../common"
 export default class App extends Invoke {
     static instance: App
     public mainWindow:BrowserWindow
     constructor(){
         super()
+        setAppMenu()
+        this.registerShortcut()
         this.createWindow()
         this.mainWindow.loadFile(path.join(__dirname, '../render/index.html'))
         this.mainWindow.once('ready-to-show',()=>this.mainWindow.show())
-        globalShortcut.register('CommandOrControl+D', this.openDev)
-        globalShortcut.register('CommandOrControl+R', this.reload)
     }
 
     static getInstance(){
-        if(!App.instance){
-            App.instance = new App
+        if(!this.instance){
+            this.instance = new App
         }
-        return App.instance
+        return this.instance
     }
 
     browserWindowOptionsBuilder(): BrowserWindowConstructorOptions{
@@ -28,8 +30,15 @@ export default class App extends Invoke {
 
     createWindow(){
         const options = addDevOption(this.browserWindowOptions)
-        console.log(options);
+        console.log(options)
         this.mainWindow = new BrowserWindow(options)
+    }
+
+    registerShortcut(){
+        if(isDev){
+            globalShortcut.register('CommandOrControl+D', this.openDev)
+            globalShortcut.register('CommandOrControl+R', this.reload)
+        }
     }
 
     openDev(){
