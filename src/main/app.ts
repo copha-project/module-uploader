@@ -13,8 +13,6 @@ export default class App extends Invoke {
         setAppMenu()
         this.registerShortcut()
         this.createWindow()
-        this.mainWindow.loadFile(path.join(__dirname, '../render/index.html'))
-        this.mainWindow.once('ready-to-show',()=>this.mainWindow.show())
     }
 
     static getInstance(){
@@ -30,8 +28,9 @@ export default class App extends Invoke {
 
     createWindow(){
         const options = addDevOption(this.browserWindowOptions)
-        console.log(options)
         this.mainWindow = new BrowserWindow(options)
+        this.mainWindow.loadFile(path.join(__dirname, '../render/index.html'))
+        this.mainWindow.once('ready-to-show',()=>this.mainWindow.show())
     }
 
     registerShortcut(){
