@@ -41,6 +41,12 @@ export default class App extends Invoke {
         }
     }
 
+    quit(){
+        console.log("ready to exit app");
+        this.mainWindow.close()
+        app.quit()
+    }
+
     openDev(){
         openDevTool()
     }

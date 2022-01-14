@@ -84,6 +84,10 @@ async function openFileSelect(e) {
   findElement("input[name=hashMd5]").value = fileInfo.md5;
 }
 
+function quit(){
+  return app.exit()
+}
+
 const token = localStorage.getItem("token");
 if (token) {
   findElement("#token").value = token;
@@ -93,3 +97,4 @@ if (token) {
 findElement(".signToken").addEventListener("click", signToken);
 findElement("#open-select-file").addEventListener("click", openFileSelect);
 findElement(".submit").addEventListener("click", upload);
+findElement(".quit").addEventListener("click", quit);
