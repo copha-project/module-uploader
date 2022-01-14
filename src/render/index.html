@@ -10,43 +10,52 @@
   </head>
   <body>
     <div class="container">
-    <div class="title">
-      <h1>Copha Module Uploader</h1>
-    </div>
-    <div class="menu">
-      <div>
-        <input type="text" id="token" placeholder="输入Token">
-        <button class="signToken">验证 Token</button>
+      <div class="container-border">
+        
+        <div class="container-content">
+          <div class="right-menu">
+            <button type="button" class="quit">quit</button>
+          </div>
+          <div class="title">
+            <h1>Copha Module Uploader</h1>
+          </div>
+          <div class="menu">
+            <div>
+              <input type="text" id="token" placeholder="输入Token">
+              <button class="signToken">验证 Token</button>
+            </div>
+            <button id="open-select-file" type="button">加载模块包</button>
+          </div>
+          <form action="#">
+            <div class="formBox">
+              <div class="inputItem">
+                <label>模块 ID</label>
+                <input type="text" name="moduleId" readonly>
+              </div>
+              <div class="inputItem">
+                <label>名称</label>
+                <input type="text" name="moduleName" readonly>
+              </div>
+              <div class="inputItem">
+                <label>新版本号</label>
+                <input type="text" name="moduleVer" placeholder="x.x.x">
+              </div>
+              <div class="inputItem">
+                <label>MD5</label>
+                <input type="text" name="hashMd5" placeholder="xxx">
+              </div>
+              <div class="inputItem">
+                <label>SHA1</label>
+                <input type="text" name="hashSha1" placeholder="xxx">
+              </div>
+              <br>
+              <button type="button" class="submit">upload</button>
+            </div>
+          </form>
+        </div>
+        
       </div>
-      <button id="open-select-file" type="button">加载模块包</button>
     </div>
-    <form action="#">
-      <div class="formBox">
-        <div class="inputItem">
-          <label>模块 ID</label>
-          <input type="text" name="moduleId" readonly>
-        </div>
-        <div class="inputItem">
-          <label>名称</label>
-          <input type="text" name="moduleName" readonly>
-        </div>
-        <div class="inputItem">
-          <label>新版本号</label>
-          <input type="text" name="moduleVer" placeholder="x.x.x">
-        </div>
-        <div class="inputItem">
-          <label>MD5</label>
-          <input type="text" name="hashMd5" placeholder="xxx">
-        </div>
-        <div class="inputItem">
-          <label>SHA1</label>
-          <input type="text" name="hashSha1" placeholder="xxx">
-        </div>
-        <br>
-        <button type="button" class="submit">upload</button>
-      </div>
-    </form>
-  </div>
   </body>
   <script src="./index.js"></script>
 </html>
