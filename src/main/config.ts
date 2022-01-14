@@ -1,4 +1,5 @@
-import { BrowserWindowConstructorOptions,app } from "electron"
+import { BrowserWindowConstructorOptions,app, BrowserViewConstructorOptions } from "electron"
+import { merge } from 'lodash'
 import { appIcon } from '../constants'
 import path from 'path'
 import { isMac, isWin32 } from "../common"
@@ -26,15 +27,16 @@ export function winOptionsBuilder(){
         frame: false,
         transparent: true
     }
-    return Object.assign(baseOptions, winOptions)
+    return merge(baseOptions, winOptions)
 }
 
 export function macOptionsBuilder(){
-    const macOptions = {
-        titleBarStyle: 'hidden',
+    const macOptions: BrowserWindowConstructorOptions = {
+        // titleBarStyle: 'hiddenInset',
+        frame: false,
         opacity: 0.99,
     }
-    return Object.assign(baseOptions, macOptions)
+    return merge(baseOptions, macOptions)
 }
 
 export function getOptions(){

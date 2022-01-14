@@ -3,12 +3,14 @@ import path from 'path'
 import hotReload from './hot-reload'
 import { changeDisplayPosition, changeWebPreferences } from "./windowConfig"
 import { isDev } from '../common'
+import { merge } from "lodash"
 
 export function addDevOption(options: BrowserWindowConstructorOptions): BrowserWindowConstructorOptions {
     if(isDev){
-        options = Object.assign(options, changeDisplayPosition(options))
-        options = Object.assign(options, changeWebPreferences(options))
+        options = merge(options, changeDisplayPosition(options))
+        options = merge(options, changeWebPreferences(options))
         options.resizable = true
+        options.alwaysOnTop = true
     }
     return options
 }
