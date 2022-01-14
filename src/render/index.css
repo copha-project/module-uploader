@@ -6,6 +6,10 @@ body {
   user-select: none;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 .container{
   display: flex;
   justify-content: center;
@@ -14,6 +18,8 @@ body {
   height: 600px;
   background-color: white;
   -webkit-app-region: drag;
+  /* transform: scale(0.94); */
+  /* overflow: hidden; */
 }
 .container-border{
   display: flex;
@@ -35,6 +41,7 @@ body {
   width: 760px;
   height: 90%;
   position: relative;
+  /* box-shadow: inset 0px -1px 10px 1px #0000002e; */
 }
 
 .right-menu{
@@ -43,9 +50,9 @@ body {
   right: 10px;
 }
 
-.right-menu .quit{
+/* .right-menu .quit{
   font-size: 20px;
-}
+} */
 
 .title{
   display: flex;

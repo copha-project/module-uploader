@@ -2,14 +2,16 @@ import { app, BrowserWindow, BrowserWindowConstructorOptions } from "electron"
 import path from 'path'
 import hotReload from './hot-reload'
 import { changeDisplayPosition, changeWebPreferences } from "./windowConfig"
-import { isDev } from '../common'
+import { isDev, isWin32 } from '../common'
 import { merge } from "lodash"
 
 export function addDevOption(options: BrowserWindowConstructorOptions): BrowserWindowConstructorOptions {
     if(isDev){
         options = merge(options, changeDisplayPosition(options))
         options = merge(options, changeWebPreferences(options))
-        options.resizable = true
+        if(!isWin32){
+            options.resizable = true
+        }
         options.alwaysOnTop = true
     }
     return options

@@ -24,7 +24,9 @@ const baseOptions: BrowserWindowConstructorOptions = {
 export function winOptionsBuilder(){
     const winOptions: BrowserWindowConstructorOptions = {
         icon: appIcon,
+        // titleBarStyle: 'hidden'
         frame: false,
+        
         transparent: true
     }
     return merge(baseOptions, winOptions)
