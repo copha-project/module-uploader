@@ -1,5 +1,5 @@
 import { BrowserWindowConstructorOptions, BrowserWindow, globalShortcut, app } from "electron"
-import { addDevOption } from "../dev"
+import { addDevOption, openDevTool } from "../dev"
 import { getOptions } from "./config"
 import path from 'path'
 import Invoke from "./invoke"
@@ -28,6 +28,7 @@ export default class App extends Invoke {
 
     createWindow(){
         const options = addDevOption(this.browserWindowOptions)
+        console.log("main window options :",options);
         this.mainWindow = new BrowserWindow(options)
         this.mainWindow.loadFile(path.join(__dirname, '../render/index.html'))
         this.mainWindow.once('ready-to-show',()=>this.mainWindow.show())
@@ -41,7 +42,7 @@ export default class App extends Invoke {
     }
 
     openDev(){
-        App.getInstance().mainWindow.webContents.openDevTools()
+        openDevTool()
     }
       
     reload(){
