@@ -31,6 +31,6 @@ export function openDevTool(){
         BrowserWindow.getAllWindows()[0].setBounds({width:800})
     }else{
         mainContents.openDevTools()
-        BrowserWindow.getAllWindows()[0].setBounds({width:1200})
+        BrowserWindow.getAllWindows()[0].setBounds({width:1300})
     }
 }
