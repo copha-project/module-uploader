@@ -4,8 +4,8 @@ import gulp from "gulp"
 import fs from 'fs'
 import { spawn } from 'child_process'
 import { isWin32 } from "../common"
-import merge from 'merge2'
-import ts from "gulp-typescript"
+// @ts-ignore
+import gulpTask from '../../gulpfile'
 const appPath = app.getAppPath()
 const ignoredPaths = /node_modules|[/\\]\./
 
@@ -13,17 +13,9 @@ const paths = {
   resource: ["./src/render/**/*"],
 }
 
-gulp.task('copy-file', ()=>gulp.src(paths.resource).pipe(gulp.dest("./dist/render")))
-
-gulp.task("compile-main", function () {
-  const tsProject = ts.createProject("./tsconfig.json")
-  const tsResult = tsProject.src().pipe(tsProject())
-
-  return merge([
-    tsResult.dts.pipe(gulp.dest('./dist/types')),
-    tsResult.js.pipe(gulp.dest('./dist/'))
-  ])
-})
+gulp.task('copy-file', gulpTask.staticTask)
+gulp.task('scss', gulpTask.scssTask)
+gulp.task("compile-main", gulpTask.tsTask)
 /**
  * Creates a callback for hard resets.
  *
@@ -93,6 +85,9 @@ export default function elecronReload (glob: any, options:any) {
 
   watcher.on('change', (file: string)=>{
     console.log('file change: ',file);
+    if(file.match(/src[\/|\\]render[\/|\\].+\.scss/)){
+      gulp.series('scss')(renderReloadHandler)
+    }
     if(file.match(/src[\/|\\]render[\/|\\]/)){
       gulp.series('copy-file')(renderReloadHandler)
     }

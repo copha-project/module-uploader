@@ -1,5 +1,12 @@
+@font-face{
+  font-family:"rockwell-std-bold";
+  src:url("./webfonts/Rockwell-Std-Bold.otf") format("woff"),
+  url("./webfonts/Rockwell-Std-Bold.otf") format("opentype"),
+  url("./webfonts/Rockwell-Std-Bold.otf") format("truetype");
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: rockwell-std-bold, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   padding: 0;
   margin: 0;
   -webkit-user-select: none;
@@ -37,27 +44,47 @@ body {
   -webkit-app-region: no-drag;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   width: 760px;
   height: 90%;
-  position: relative;
   /* box-shadow: inset 0px -1px 10px 1px #0000002e; */
 }
 
-.right-menu{
-  position: absolute;
-  top: 10px;
-  right: 10px;
+.nav {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  height: 50px;
+  .left-section{
+    display: flex;
+    flex-direction: row;
+    .logo{
+      width: 100px;
+      height: 50px;
+      background-image: url(./image/logo/logo2x1n.png);
+      background-size: contain;
+      background-position: center;
+      margin-left: 10px;
+    }
+    .title{
+      display: flex;
+      align-self: center;
+      justify-content: center;
+      color: darkslategray;
+      font-size: 24px;
+      margin: 5px 0 0 10px;
+      color: #8790E6;
+    }
+  }
+  .right-section{
+    margin: 0px 5px 0 0;
+  }
 }
 
-/* .right-menu .quit{
-  font-size: 20px;
-} */
-
-.title{
-  display: flex;
-  justify-content: center;
-  color: darkslategray;
+.line{
+  height: 1px;
+  width: 95%;
+  background-color: #c2e9fb;
+  margin: 5px auto;
 }
 
 .menu {
