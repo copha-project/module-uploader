@@ -94,6 +94,17 @@ if (token) {
   initWithToken(token);
 }
 
+;(function(){
+  findElement('.open-settings').addEventListener('click',function(){
+    console.log(findElement('.modal.settings'));
+    findElement('.modal.settings').classList.add('is-active')
+  })
+
+  findElement('.settings .close').addEventListener('click',function(){
+    findElement('.modal.settings').classList.remove('is-active')
+  })
+})()
+
 findElement(".signToken").addEventListener("click", signToken);
 findElement("#open-select-file").addEventListener("click", openFileSelect);
 findElement(".submit").addEventListener("click", upload);
