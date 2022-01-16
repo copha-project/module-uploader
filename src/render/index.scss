@@ -125,7 +125,7 @@ body {
   justify-content: space-between;
   width: 600px;
   height: 400px;
-  background-color: #2FB3FA;
+  background-color: ghostwhite;
   border-radius: 10px;
   padding: 20px;
   opacity: 0.98;
@@ -142,8 +142,19 @@ body {
     border: 1px solid #8790E6;
     border-radius: 6px;
     padding: 5px;
+    overflow-y: scroll;
     .item{
-      
+      background-color: rgb(123, 183, 252);
+      padding: 5px 10px;
+      margin: 5px 0 0 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 2px;
+      span{
+        vertical-align: text-bottom;
+      }
     }
   }
 }

@@ -47,6 +47,11 @@ const uploadModule = (postData, token) => {
 function findElement(e) {
   return document.querySelector(e);
 }
+
+function findElements(e) {
+  return document.querySelectorAll(e);
+}
+
 function signToken() {
   const tokenDom = findElement("#token");
   if (!tokenDom.value) alert("no token");
@@ -96,7 +101,6 @@ if (token) {
 
 ;(function(){
   findElement('.open-settings').addEventListener('click',function(){
-    console.log(findElement('.modal.settings'));
     findElement('.modal.settings').classList.add('is-active')
   })
 
