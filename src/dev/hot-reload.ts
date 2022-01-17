@@ -9,10 +9,6 @@ import gulpTask from '../../gulpfile'
 const appPath = app.getAppPath()
 const ignoredPaths = /node_modules|[/\\]\./
 
-const paths = {
-  resource: ["./src/render/**/*"],
-}
-
 gulp.task('copy-file', gulpTask.staticTask)
 gulp.task('scss', gulpTask.scssTask)
 gulp.task("compile-main", gulpTask.tsTask)
