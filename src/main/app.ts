@@ -31,14 +31,13 @@ export default class App extends Invoke {
         console.log("main window options :",options);
         this.mainWindow = new BrowserWindow(options)
         this.mainWindow.loadFile(path.join(__dirname, '../render/index.html'))
-        this.mainWindow.once('ready-to-show',()=>this.mainWindow.show())
+        this.mainWindow.once('ready-to-show',()=>{
+            this.mainWindow.show()
+            this.mainWindow.reload()
+        })
     }
 
     registerShortcut(){
-        if(isDev){
-            globalShortcut.register('CommandOrControl+D', this.openDev)
-            globalShortcut.register('CommandOrControl+R', this.reload)
-        }
     }
 
     quit(){

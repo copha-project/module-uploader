@@ -20,6 +20,9 @@ const template: MenuItemConstructorOptions[] = [
         ]
     },
     {
+        role: 'editMenu'
+    },
+    {
         role: 'viewMenu'
     },
     {
