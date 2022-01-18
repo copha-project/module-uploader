@@ -3,9 +3,11 @@ import chokidar from 'chokidar'
 import gulp from "gulp"
 import fs from 'fs'
 import { spawn } from 'child_process'
-import { isWin32 } from "../common"
-// @ts-ignore
+import os from 'os'
+//@ts-ignore
 import gulpTask from '../../gulpfile'
+
+const isWin32 = os.platform() === 'win32'
 const appPath = app.getAppPath()
 const ignoredPaths = /node_modules|[/\\]\./
 
@@ -26,6 +28,7 @@ const createMainReloadHandler = (eXecutable:string, hardResetMethod:any, eArgv: 
     // app.relaunch()
     // Detaching child is useful when in Windows to let child
     // live after the parent is killed
+    
     const args = (eArgv || [])
       .concat([appPath])
       .concat(aArgv || [])

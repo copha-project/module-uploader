@@ -1,10 +1,10 @@
 import { BrowserWindowConstructorOptions, BrowserWindow, globalShortcut, app } from "electron"
-import { addDevOption, openDevTool } from "../dev"
 import { getOptions } from "./config"
 import path from 'path'
 import Invoke from "./invoke"
+import { merge } from "lodash"
 import { setAppMenu } from "./menu"
-import { isDev } from "../common"
+import { isMac } from '../common'
 export default class App extends Invoke {
     static instance: App
     public mainWindow:BrowserWindow
@@ -12,7 +12,6 @@ export default class App extends Invoke {
         super()
         setAppMenu()
         this.registerShortcut()
-        this.createWindow()
     }
 
     static getInstance(){
@@ -21,14 +20,46 @@ export default class App extends Invoke {
         }
         return this.instance
     }
+    
+    launch(){
+        this.initApp(this.browserWindowOptionsBuilder)
+    }
+
+    launchWithOptionsBuilder(optionsBuilder: ()=>BrowserWindowConstructorOptions){
+        this.initApp(optionsBuilder)
+    }
+
+    initApp(optionsBuilder?: ()=>BrowserWindowConstructorOptions){
+        if (require('electron-squirrel-startup')) {
+            this.quit()
+        }
+
+        app.on('ready', ()=> {
+            App.getInstance().createWindow(optionsBuilder())
+        })
+
+        app.on('window-all-closed', () => {
+            if (!isMac) {
+              App.getInstance().quit()
+            }
+        })
+
+        app.on('activate', function(){
+            // On OS X it's common to re-create a window in the app when the
+            // dock icon is clicked and there are no other windows open.
+            if (BrowserWindow.getAllWindows().length === 0) {
+                App.getInstance().createWindow(optionsBuilder())
+            }
+        })
+    }
 
     browserWindowOptionsBuilder(): BrowserWindowConstructorOptions{
         return getOptions()
     }
 
-    createWindow(){
-        const options = addDevOption(this.browserWindowOptions)
-        console.log("main window options :",options);
+    createWindow(options:BrowserWindowConstructorOptions){
+        options = merge(this.browserWindowOptions, options || {})
+        console.log("main window options :",options)
         this.mainWindow = new BrowserWindow(options)
         this.mainWindow.loadFile(path.join(__dirname, '../render/index.html'))
         this.mainWindow.once('ready-to-show',()=>{
@@ -41,13 +72,9 @@ export default class App extends Invoke {
     }
 
     quit(){
-        console.log("ready to exit app");
-        this.mainWindow.close()
-        app.quit()
-    }
-
-    openDev(){
-        openDevTool()
+        console.log("ready to exit app")
+        this.mainWindow?.close()
+        app.quit();
     }
       
     reload(){

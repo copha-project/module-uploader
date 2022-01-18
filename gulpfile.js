@@ -22,7 +22,7 @@ function staticTask() {
 }
 
 function tsTask() {
-  const tsProject = ts.createProject("tsconfig.json")
+  const tsProject = ts.createProject("./src/tsconfig.json")
   const tsResult = tsProject.src().pipe(tsProject())
 
   return merge([
@@ -32,12 +32,18 @@ function tsTask() {
 }
 
 function delTask(){
-  return del('./dist', {force:true});
+  return del(['./dist/*','!./dist/dev'], {force:true});
 }
 
-gulp.task('clean', delTask);
+function dev(){
+  const tsProject = ts.createProject("./dev/tsconfig.json")
+  const tsResult = tsProject.src().pipe(tsProject())
+  return tsResult.js.pipe(gulp.dest('dist/dev'))
+}
 
-gulp.task("copy-resource-file", staticTask);
+gulp.task('clean', delTask)
+gulp.task('dev', dev)
+gulp.task("copy-resource-file", staticTask)
 gulp.task("build-scss", scssTask)
 gulp.task("compile-ts", tsTask)
 gulp.task("default", gulp.series('clean',"compile-ts","copy-resource-file","build-scss"))
