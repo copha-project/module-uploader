@@ -1,11 +1,11 @@
 function buildTokenItem(name,isActive,id){
-    const tpl = `<div class="item">
+    const tpl = `<div class="item" data-id='${id}'>
     <label class="checkbox">
       <input type="checkbox" name='active' ${isActive? "checked":""}>
       <span class='name'>${name}</span>
       <span class='token'>${id}</span>
     </label>
-    <button type='button' class="button is-small is-danger" data-id='${id}'>删除</button>
+    <button type='button' class="button is-small is-danger">删除</button>
   </div>`
     const div = document.createElement('div')
     div.innerHTML = tpl
@@ -24,32 +24,51 @@ async function addToken(){
     moduleData.active = false
     try {
         await addModule(moduleData)
-        initSettings()
+        loadData()
     } catch (error) {
         console.log(error.message);
     }
     findElement('.settings .new-token').value = ''
 }
 
-async function removeToken(e){
+function removeToken(id){
     try {
-        delModule(e.target.dataset.id)
-        e.target.parentElement.remove()
+        delModule(id)
     } catch (error) {
-        alert(error.message)
+        console.log(error.message)
+    }
+}
+function activeToken(id){
+    try {
+        activeModule(id)
+    } catch (error) {
+        console.log(error.message)
     }
 }
 
-function initSettings(){
+function loadData(){
     const modules = getModuleList()
     const moduleList = findElement('.settings .token-list')
+    moduleList.textContent = ''
     for (const m of modules) {
         moduleList.append(buildTokenItem(m.name, m.active, m.id))
     }
+}
+
+const queryParent = (node, className) => node.nodeName !== 'HTML' ? node.parentNode.classList.contains(className) ? node.parentNode : queryParent(node.parentNode,className) : null
+
+function initSettings(){
+    loadData()
     findElement('.settings .token-list').addEventListener('click', function(e){
+        e.preventDefault()
+        if(['DIV'].includes(e.target.tagName)) return
+        const item = queryParent(e.target,'item')
         if(e.target.tagName === 'BUTTON'){
-            removeToken(e)
+            removeToken(item.dataset.id)
+        }else if(['INPUT','SPAN'].includes(e.target.tagName)){
+            activeToken(item.dataset.id)
         }
+        loadData()
     })
 }
 

@@ -19,7 +19,20 @@ async function addModule(m){
 async function delModule(id){
     const modules = getModuleList()
     const index = modules.findIndex(e=>e.id === id)
+    console.log(index);
     if(index === -1) throw Error('token not exist!')
     modules.splice(index,1)
+    saveModuleList(modules)
+}
+
+async function activeModule(id){
+    const modules = getModuleList()
+    modules.map(e=>{
+        if(e.id === id){
+            e.active = true
+        }else{
+            e.active = false
+        }
+    })
     saveModuleList(modules)
 }
