@@ -5,8 +5,13 @@
   url("./webfonts/Rockwell-Std-Bold.otf") format("truetype");
 }
 
+@font-face{
+  font-family:"Oblivious";
+  src: url("../webfonts/Oblivious_font.ttf") format("truetype");
+}
+
 body {
-  font-family: rockwell-std-bold, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   padding: 0;
   margin: 0;
   -webkit-user-select: none;
@@ -60,7 +65,7 @@ body {
     .logo{
       width: 100px;
       height: 50px;
-      background-image: url(./image/logo/logo2x1n.png);
+      background-image: url(../image/logo/logo2x1n.png);
       background-size: contain;
       background-position: center;
       margin-left: 10px;
