@@ -1,17 +1,18 @@
-@font-face{
-  font-family:"rockwell-std-bold";
-  src:url("./webfonts/Rockwell-Std-Bold.otf") format("woff"),
-  url("./webfonts/Rockwell-Std-Bold.otf") format("opentype"),
-  url("./webfonts/Rockwell-Std-Bold.otf") format("truetype");
+@font-face {
+  font-family: "rockwell-std-bold";
+  src: url("./webfonts/Rockwell-Std-Bold.otf") format("woff"),
+    url("./webfonts/Rockwell-Std-Bold.otf") format("opentype"),
+    url("./webfonts/Rockwell-Std-Bold.otf") format("truetype");
 }
 
-@font-face{
-  font-family:"Oblivious";
+@font-face {
+  font-family: "Oblivious";
   src: url("../webfonts/Oblivious_font.ttf") format("truetype");
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
   padding: 0;
   margin: 0;
   -webkit-user-select: none;
@@ -22,7 +23,7 @@ body {
   display: none;
 }
 
-.container{
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,7 +34,7 @@ body {
   /* transform: scale(0.94); */
   /* overflow: hidden; */
 }
-.container-border{
+.container-border {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,7 +46,7 @@ body {
   border-radius: 6px;
   -webkit-app-region: drag;
 }
-.container-content{
+.container-content {
   -webkit-app-region: no-drag;
   display: flex;
   flex-direction: column;
@@ -59,10 +60,10 @@ body {
   justify-content: space-between;
   flex-direction: row;
   height: 50px;
-  .left-section{
+  .left-section {
     display: flex;
     flex-direction: row;
-    .logo{
+    .logo {
       width: 100px;
       height: 50px;
       background-image: url(../image/logo/logo2x1n.png);
@@ -70,22 +71,22 @@ body {
       background-position: center;
       margin-left: 10px;
     }
-    .title{
+    .title {
       display: flex;
       align-self: center;
       justify-content: center;
       color: darkslategray;
       font-size: 24px;
       margin: 5px 0 0 10px;
-      color: #8790E6;
+      color: #8790e6;
     }
   }
-  .right-section{
+  .right-section {
     margin: 0px 5px 0 0;
   }
 }
 
-.line{
+.line {
   height: 1px;
   width: 95%;
   background-color: #c2e9fb;
@@ -98,10 +99,10 @@ body {
   display: flex;
   justify-content: space-between;
 }
-.menu .signToken{
+.menu .signToken {
   margin-left: 10px;
 }
-.formBox{
+.formBox {
   margin: 10px;
   padding: 10px;
   border: 1px solid slategrey;
@@ -109,56 +110,59 @@ body {
   display: flex;
   flex-direction: column;
 }
-.inputItem{
+.inputItem {
   display: flex;
   justify-content: start;
   flex-direction: row;
   margin: 10px;
 }
 
-.inputItem label{
+.inputItem label {
   min-width: 100px;
 }
 
-.inputItem input{
+.inputItem input {
   min-width: 300px;
 }
 
-.modal.settings .content{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 600px;
-  height: 400px;
-  background-color: ghostwhite;
-  border-radius: 10px;
-  padding: 20px;
-  opacity: 0.98;
-  box-shadow: inset 0px -1px 10px 1px #0000002e;
-  .head{
+.modal.settings {
+  animation-duration: 0.5s;
+  .content {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
-  }
-  .token-list{
-    width: 560px;
-    height: 260px;
-    border: 1px solid #8790E6;
-    border-radius: 6px;
-    padding: 5px;
-    overflow-y: scroll;
-    .item{
-      background-color: rgb(123, 183, 252);
-      padding: 5px 10px;
-      margin: 5px 0 0 0;
+    width: 600px;
+    height: 400px;
+    background-color: ghostwhite;
+    border-radius: 10px;
+    padding: 20px;
+    opacity: 0.98;
+    box-shadow: inset 0px -1px 10px 1px #0000002e;
+    .head {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      border-radius: 2px;
-      span{
-        vertical-align: text-bottom;
+    }
+    .token-list {
+      width: 560px;
+      height: 260px;
+      border: 1px solid #8790e6;
+      border-radius: 6px;
+      padding: 5px;
+      overflow-y: scroll;
+      .item {
+        background-color: rgb(123, 183, 252);
+        padding: 5px 10px;
+        margin: 5px 0 0 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 2px;
+        span {
+          vertical-align: text-bottom;
+        }
       }
     }
   }
