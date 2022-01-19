@@ -15,7 +15,7 @@ function hex2a(hexx) {
 }
 
 const fetchIdByToken = (token) => {
-  const id = hex2a(token.split(":")[0])
+  const id = hex2a(token.split(":")[0]);
   return Promise.resolve(id);
 };
 
@@ -60,14 +60,15 @@ function signToken() {
 }
 
 function upload() {
-  const token = localStorage.getItem("token");
-  const version = findElement("input[name=moduleVer]").value;
-  const formData = new FormData();
-  formData.append("version", version);
+  findElement(".loading").style.setProperty("display", "flex");
+  // const token = localStorage.getItem("token");
+  // const version = findElement("input[name=moduleVer]").value;
+  // const formData = new FormData();
+  // formData.append("version", version);
 
-  const fileDom = findElement("input[name=package]");
-  formData.append("package", fileDom.files[0]);
-  uploadModule(formData, token);
+  // const fileDom = findElement("input[name=package]");
+  // formData.append("package", fileDom.files[0]);
+  // uploadModule(formData, token);
 }
 
 function initWithToken(token) {
@@ -89,27 +90,46 @@ async function openFileSelect(e) {
   findElement("input[name=hashMd5]").value = fileInfo.md5;
 }
 
-function quit(){
-  return app.exit()
+function loadModuleInfo(item){
+  findElement('.module-view .module_name').textContent = item.name
+  findElement('.module-view .module_id').textContent = item.id
+  findElement('.module-view .module_type').textContent = item.type
+  findElement('.module-view .module_repo').textContent = item.repository
+  findElement('.module-view .module_desc').textContent = item.desc
+}
+function loadPackageInfo(item){
+  if(item.packages.length){
+    findElement('.package-view .module_latest').textContent = item.packages[0].version
+    findElement('.package-view .module_count').textContent = item.packages.length
+  }else{
+    findElement('.package-view .module_latest').textContent = 'None'
+    findElement('.package-view .module_count').textContent = 0
+  }
 }
 
-const token = localStorage.getItem("token");
-if (token) {
-  findElement("#token").value = token;
-  initWithToken(token);
+async function loadModuleData(){
+  const moduleItem = await getActiveModule()
+  loadModuleInfo(moduleItem)
+  loadPackageInfo(moduleItem)
 }
 
-;(function(){
-  findElement('.open-settings').addEventListener('click',function(){
-    findElement('.modal.settings').classList.add('is-active')
-  })
+;(async function () {
+  await loadModuleData()
 
-  findElement('.settings .close').addEventListener('click',function(){
-    findElement('.modal.settings').classList.remove('is-active')
-  })
-})()
+  findElement(".open-settings").addEventListener("click", function () {
+    findElement(".modal.settings").classList.add("is-active");
+  });
 
-findElement(".signToken").addEventListener("click", signToken);
-findElement("#open-select-file").addEventListener("click", openFileSelect);
-findElement(".submit").addEventListener("click", upload);
-findElement(".quit").addEventListener("click", quit);
+  findElement(".settings .close").addEventListener("click", async function () {
+    findElement(".modal.settings").classList.remove("is-active");
+    await loadModuleData()
+  });
+
+  findElement("#open-select-file").addEventListener("click", openFileSelect);
+  findElement(".submit").addEventListener("click", upload);
+  findElement(".quit").addEventListener("click", app.exit);
+  findElement(".cancel-upload").addEventListener("click", () => {
+    const loading = findElement(".loading");
+    loading.style.setProperty("display", "none");
+  });
+})();

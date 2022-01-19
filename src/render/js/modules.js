@@ -24,7 +24,6 @@ async function delModule(id){
     modules.splice(index,1)
     saveModuleList(modules)
 }
-
 async function activeModule(id){
     const modules = getModuleList()
     modules.map(e=>{
@@ -35,4 +34,16 @@ async function activeModule(id){
         }
     })
     saveModuleList(modules)
+}
+
+async function getActiveModule(){
+    const modules = await getModuleList()
+    if(!modules.length) return null
+    let activeModule = modules.find(e=>e.active)
+    if(!activeModule){
+        modules[0].active = true
+        await saveModuleList(modules)
+        activeModule = modules[0]
+    }
+    return activeModule
 }

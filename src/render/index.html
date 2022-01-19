@@ -15,6 +15,7 @@
     <div class="container">
       <div class="container-border">
         <div class="container-content">
+
           <div class="nav">
             <div class="left-section">
               <div class="logo"></div>
@@ -35,47 +36,126 @@
               </button>
             </div>
           </div>
-          <div class="line"></div>
-          <div class="menu">
-            <div>
-              <input type="text" id="token" placeholder="输入Token">
-              <button class="signToken">验证 Token</button>
+
+          <div class="line h2"></div>
+
+          <div class="flex row module-panel">
+            <div class="flex col left-panel">
+              <div class="module-view flex col">
+                <h2 class="name module_name">name</h2>
+                <div class="detail-view">
+
+                <div class="field">
+                  <label class="field_name">Id</label>
+                  <span class="text module_id"></span>
+                </div>
+
+                <div class="field">
+                  <label class="field_name">Type</label>
+                  <span class="text module_type"></span>
+                </div>
+                
+                <div class="field">
+                  <label class="field_name">Repository</label>
+                  <span class="text module_repo"></span>
+                </div>
+
+                <div class="field">
+                  <label class="field_name">Desc</label>
+                  <span class="text long module_desc"></span>
+                </div>
+
+                </div>
+              </div>
+              <div class="package-view flex col">
+                <h2 class="name">Package Info</h2>
+                <div class="detail-view">
+                  <div class="field">
+                    <label class="field_name">Latest</label>
+                    <span class="text module_latest"></span>
+                  </div>
+                  <div class="field">
+                    <label class="field_name">Count</label>
+                    <span class="text module_count"></span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <button id="open-select-file" type="button">加载模块包</button>
+            <div class="flex right-panel">
+              <div class="loading animate__animated animate__faster animate__zoomIn">
+                <div class="upload-progress flex col">
+                  <div class="step">
+                    <span class="icon has-text-success">
+                      <i class="fas fa-2x fa-check-circle"></i>
+                    </span>
+                    <span class="info">Register package info</span>
+                  </div>
+                  <div class="step-gap"></div>
+                  <div class="step">
+                    <span class="icon has-text-info">
+                      <i class="fas fa-2x fa-spinner fa-pulse"></i>
+                    </span>
+                    <span class="info">Upload package</span>
+                  </div>
+                  <div class="step-gap"></div>
+                  <div class="step">
+                    <span class="icon has-text-white">
+                      <i class="fas fa-2x fa-clock"></i>
+                    </span>
+                    <span class="info">Done</span>
+                  </div>
+                </div>
+                <button class="button is-small is-danger cancel-upload" type="button">Cancel</button>
+              </div> 
+              <div class="upload-view flex col">
+                <div class="file is-boxed upload-picker" id="open-select-file">
+                  <label class="file-label">
+                    <a class="file-input"></a>
+                    <span class="file-cta">
+                      <span class="file-icon">
+                        <i class="fas fa-upload"></i>
+                      </span>
+                      <span class="file-label">
+                        Open module folder
+                      </span>
+                    </span>
+                  </label>
+                </div>
+                <div class="line"></div>
+                <div class="upload-package-info flex col">
+                  <div class="field">
+                    <label class="label">VERSION</label>
+                    <div class="control">
+                      <input class="input is-small" type="text" name="moduleVer" readonly placeholder="x.x.x">
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label class="label">MD5</label>
+                    <div class="control">
+                      <input class="input is-small" type="text" name="hashMd5" readonly>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label class="label">SHA1</label>
+                    <div class="control">
+                      <input class="input is-small" type="text" name="hashSha1" readonly>
+                    </div>
+                  </div>
+                </div>
+                <div class="submit-view">
+                  <button type="button" class="button submit">Upload</button>
+                </div>
+              </div>
+            </div>
           </div>
-          <form action="#">
-            <div class="formBox">
-              <div class="inputItem">
-                <label>模块 ID</label>
-                <input type="text" name="moduleId" readonly>
-              </div>
-              <div class="inputItem">
-                <label>名称</label>
-                <input type="text" name="moduleName" readonly>
-              </div>
-              <div class="inputItem">
-                <label>新版本号</label>
-                <input type="text" name="moduleVer" placeholder="x.x.x">
-              </div>
-              <div class="inputItem">
-                <label>MD5</label>
-                <input type="text" name="hashMd5" placeholder="xxx">
-              </div>
-              <div class="inputItem">
-                <label>SHA1</label>
-                <input type="text" name="hashSha1" placeholder="xxx">
-              </div>
-              <br>
-              <button type="button" class="submit">upload</button>
-            </div>
-          </form>
+
           <div class="modal settings animate__fadeIn animate__zoomIn">
             <!-- <div class="modal-background"></div> -->
             <div class="modal-content">
               <div class="content">
                 <div class="head">
                   <div>
-                    设置
+                    Settings
                   </div>
                   <button type="button" class="button is-info is-outlined is-small close">
                     <span class="icon is-small">
@@ -106,6 +186,7 @@
             </div>
             <!-- <button class="modal-close is-large" aria-label="close"></button> -->
           </div>
+
         </div>
       </div>
     </div>
