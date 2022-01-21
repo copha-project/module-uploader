@@ -6,7 +6,8 @@
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://hub.copha.net 'unsafe-inline'"> -->
     <!-- <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self' https://hub.copha.net 'unsafe-inline'"> -->
     <title>Copha Module Uploader</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="./css/fontawesome.min.css">
     <link rel="stylesheet" href="./css/bulma.min.css">
     <link rel="stylesheet" href="./css/index.css">
@@ -24,7 +25,8 @@
               </div>
             </div>
             <div class="right-section">
-              <button type="button" class="button is-info is-outlined open-settings">
+              <button type="button" class="button is-info is-outlined
+                open-settings">
                 <span class="icon is-large">
                   <i class="fas fa-cog fa-lg"></i>
                 </span>
@@ -42,28 +44,42 @@
           <div class="flex row module-panel">
             <div class="flex col left-panel">
               <div class="module-view flex col">
-                <h2 class="name module_name">name</h2>
+                <div class="head-view">
+                  <span class="icon-text head-view-left">
+                    <span class="name module_name">name</span>
+                    <span class="icon has-text-grey-lighter">
+                      <i class="fas fa-pen-square module-edit"></i>
+                    </span>
+                  </span>
+                  <button class="button is-link is-outlined is-small module-save">
+                    <span class="icon">
+                      <i class="fas fa-save"></i>
+                    </span>
+                  </button>
+                </div>
                 <div class="detail-view">
 
-                <div class="field">
-                  <label class="field_name">Id</label>
-                  <span class="text module_id"></span>
-                </div>
+                  <div class="field">
+                    <label class="field_name">Id</label>
+                    <span class="text module_id"></span>
+                  </div>
 
-                <div class="field">
-                  <label class="field_name">Type</label>
-                  <span class="text module_type"></span>
-                </div>
-                
-                <div class="field">
-                  <label class="field_name">Repository</label>
-                  <span class="text module_repo"></span>
-                </div>
+                  <div class="field">
+                    <label class="field_name">Type</label>
+                    <span class="text module_type"></span>
+                  </div>
 
-                <div class="field">
-                  <label class="field_name">Desc</label>
-                  <span class="text long module_desc"></span>
-                </div>
+                  <div class="field">
+                    <label class="field_name">Repository</label>
+                    <span class="text module_repo"></span>
+                    <input class="input is-small margin-left-20" type="text" name="module_repo_edit">
+                  </div>
+
+                  <div class="field">
+                    <label class="field_name">Desc</label>
+                    <span class="text long module_desc"></span>
+                    <textarea class="textarea is-small margin-left-20 has-fixed-size" name="module_desc_edit" rows="4"></textarea>
+                  </div>
 
                 </div>
               </div>
@@ -82,7 +98,8 @@
               </div>
             </div>
             <div class="flex right-panel">
-              <div class="loading animate__animated animate__faster animate__zoomIn">
+              <div class="loading animate__animated animate__faster
+                animate__zoomIn">
                 <div class="upload-progress flex col">
                   <div class="step">
                     <span class="icon has-text-success">
@@ -105,8 +122,9 @@
                     <span class="info">Done</span>
                   </div>
                 </div>
-                <button class="button is-small is-danger cancel-upload" type="button">Cancel</button>
-              </div> 
+                <button class="button is-small is-danger cancel-upload"
+                  type="button">Cancel</button>
+              </div>
               <div class="upload-view flex col">
                 <div class="file is-boxed upload-picker" id="open-select-file">
                   <label class="file-label">
@@ -126,19 +144,22 @@
                   <div class="field">
                     <label class="label">VERSION</label>
                     <div class="control">
-                      <input class="input is-small" type="text" name="moduleVer" readonly placeholder="x.x.x">
+                      <input class="input is-small" type="text" name="moduleVer"
+                        readonly placeholder="x.x.x">
                     </div>
                   </div>
                   <div class="field">
                     <label class="label">MD5</label>
                     <div class="control">
-                      <input class="input is-small" type="text" name="hashMd5" readonly>
+                      <input class="input is-small" type="text" name="hashMd5"
+                        readonly>
                     </div>
                   </div>
                   <div class="field">
                     <label class="label">SHA1</label>
                     <div class="control">
-                      <input class="input is-small" type="text" name="hashSha1" readonly>
+                      <input class="input is-small" type="text" name="hashSha1"
+                        readonly>
                     </div>
                   </div>
                 </div>
@@ -157,7 +178,8 @@
                   <div>
                     Settings
                   </div>
-                  <button type="button" class="button is-info is-outlined is-small close">
+                  <button type="button" class="button is-info is-outlined
+                    is-small close">
                     <span class="icon is-small">
                       <i class="far fa-times-circle fa-lg"></i>
                     </span>
@@ -166,7 +188,8 @@
                 <div>
                   <div class="field has-addons">
                     <p class="control has-icons-left is-expanded">
-                      <input class="input is-small new-token" type="text" placeholder="copha module token">
+                      <input class="input is-small new-token" type="text"
+                        placeholder="copha module token">
                       <span class="icon is-small is-left">
                         <i class="fas fa-lock"></i>
                       </span>

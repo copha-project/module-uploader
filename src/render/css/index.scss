@@ -23,6 +23,20 @@ body {
   display: none !important;
 }
 
+.margin-left-20 {
+  margin-left: 20px;
+}
+.margin-left-5 {
+  margin-left: 5px;
+}
+
+.padding-left-10 {
+  padding-left: 10px;
+}
+.padding-left-5 {
+  padding-left: 5px;
+}
+
 .flex{
   display: flex;
   &.row {
@@ -123,12 +137,31 @@ body {
       // background-color: #00cba9;
       background-image: linear-gradient(to top, #5ee7df 0%, #b490ca 100%);
       justify-content: space-between;
-      .name{
-        font-size: 26px;
-        font-weight: 600;
-        padding-left: 10px;
-        margin-bottom: 10px;
-        color: floralwhite;
+      .head-view{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .head-view-left{
+          align-items: baseline;
+          line-height: unset;
+          .name{
+            font-size: 26px;
+            font-weight: 600;
+            padding-left: 10px;
+            margin-bottom: 10px;
+            color: floralwhite;
+          }
+          .module-edit{
+            cursor: pointer;
+            &:hover{
+              color: rgb(141, 145, 136);
+            }
+          }
+        }
+        .module-save{
+          display: none;
+          margin-top: 5px;
+        }
       }
       .module_id{
         font-size: 11px;
@@ -172,11 +205,22 @@ body {
           margin-left: 20px;
           box-shadow: inset 0px -1px 10px 1px #4988b12e;
           padding: 2px 2px 2px 10px;
+          color: #3a5221;
           flex: 1;
           &.long{
             border-radius: 4px;
             font-size: 14px;
           }
+        }
+        .module_repo{
+          margin-bottom: 5px;
+        }
+        input[name="module_repo_edit"]{
+          display: none;
+        }
+        textarea[name="module_desc_edit"] {
+          min-width: unset;
+          display: none;
         }
       }
     }
