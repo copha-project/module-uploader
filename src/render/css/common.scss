@@ -1,0 +1,25 @@
+$direction : top,right,bottom,left;
+$repeat : 30;
+
+@mixin gen($prop) {
+  @each $subProp in $direction {
+    @for $i from 0 to $repeat {
+        .#{$prop}-#{$subProp}-#{$i+1} {
+          #{$prop}-#{$subProp} : ($i + 1) * 1px;
+        }
+    }
+  }
+}
+
+@include gen("margin");
+@include gen("padding");
+
+.flex{
+    display: flex;
+    &.row {
+      flex-direction: row;
+    }
+    &.col {
+      flex-direction: column;
+    }
+  }

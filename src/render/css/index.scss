@@ -1,3 +1,5 @@
+@import './common.scss';
+
 @font-face {
   font-family: "rockwell-std-bold";
   src: url("../webfonts/Rockwell-Std-Bold.otf") format("woff"),
@@ -21,30 +23,6 @@ body {
 
 .hide{
   display: none !important;
-}
-
-.margin-left-20 {
-  margin-left: 20px;
-}
-.margin-left-5 {
-  margin-left: 5px;
-}
-
-.padding-left-10 {
-  padding-left: 10px;
-}
-.padding-left-5 {
-  padding-left: 5px;
-}
-
-.flex{
-  display: flex;
-  &.row {
-    flex-direction: row;
-  }
-  &.col {
-    flex-direction: column;
-  }
 }
 
 ::-webkit-scrollbar {
