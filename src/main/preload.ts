@@ -5,5 +5,6 @@ contextBridge.exposeInMainWorld('app', {
   api:{
     openFileSelectorDialog: () => ipcRenderer.invoke('openFileSelectorDialog'),
     getModuleInfo: (filePath:string) => ipcRenderer.invoke('getFileHashData', filePath)
-  }
+  },
+  showError: msg => ipcRenderer.send('showError', msg)
 })

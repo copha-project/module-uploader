@@ -1,4 +1,4 @@
-import { ipcMain, dialog, IpcMainInvokeEvent, app } from 'electron'
+import { ipcMain, dialog, IpcMainInvokeEvent, IpcMainEvent } from 'electron'
 import Utils from 'uni-utils'
 import App from './app'
 
@@ -9,6 +9,7 @@ export default class Invoke {
     constructor(){
         ipcMain.handle('openFileSelectorDialog', this.openFileSelectorDialog)
         ipcMain.handle('getFileHashData',this.getFileHashData)
+        ipcMain.on('showError',this.showError)
         ipcMain.handle('cmd', this.cmd)
     }
     async openFileSelectorDialog(event:IpcMainInvokeEvent, ...args:any[]){
@@ -29,6 +30,12 @@ export default class Invoke {
             sha1: await Utils.hash.getFileHash(filePath,'sha1'),
             md5: await Utils.hash.getFileMd5(filePath)
         }
+    }
+    async showError(event:IpcMainEvent, ...args:any[]) {
+        dialog.showMessageBox(App.getInstance().mainWindow,{
+            type: 'error',
+            message: args[0]||'unknow error'
+        })
     }
     cmd(event:IpcMainInvokeEvent, command:string ,...args:any[]){
         console.log('get command:', command);
