@@ -18,7 +18,7 @@ async function addToken(){
         console.log('no token');
         return
     }
-    const id = await fetchIdByToken(token)
+    const id = fetchIdByToken(token)
     const moduleData = await fetchModule(id)
     moduleData.token = token
     moduleData.active = false

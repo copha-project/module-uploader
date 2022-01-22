@@ -15,8 +15,7 @@ function hex2a(hexx) {
 }
 
 const fetchIdByToken = (token) => {
-  const id = hex2a(token.split(":")[0]);
-  return Promise.resolve(id);
+  return hex2a(token.split(":")[0])
 };
 
 const fetchModule = (id) => {
@@ -52,13 +51,6 @@ function findElements(e) {
   return document.querySelectorAll(e);
 }
 
-function signToken() {
-  const tokenDom = findElement("#token");
-  if (!tokenDom.value) alert("no token");
-  localStorage.setItem("token", tokenDom.value);
-  initWithToken(tokenDom.value);
-}
-
 function upload() {
   findElement(".loading").style.setProperty("display", "flex");
   // const token = localStorage.getItem("token");
@@ -69,17 +61,6 @@ function upload() {
   // const fileDom = findElement("input[name=package]");
   // formData.append("package", fileDom.files[0]);
   // uploadModule(formData, token);
-}
-
-function initWithToken(token) {
-  fetchIdByToken(token).then((id) => {
-    findElement("input[name=moduleId]").value = id;
-    fetchModule(id)
-      .then((data) => {
-        findElement("input[name=moduleName]").value = data.name;
-      })
-      .catch(console.log);
-  });
 }
 
 async function openFileSelect(e) {
@@ -117,6 +98,53 @@ async function loadModuleData(){
   loadPackageInfo(moduleItem)
 }
 
+async function saveModuleInfo(){
+  const repo = findElement('.module-view input[name="module_repo_edit"]').value
+  const desc = findElement('.module-view textarea[name="module_desc_edit"]').value
+
+  if(!repo || !desc) return
+  const moduleItem = await getActiveModule()
+  if(moduleItem.repo === repo && moduleItem.desc === desc) return
+  saveRemoteModule(moduleItem,{repository: repo,desc})
+  .then(res=>{
+    closeModuleInfoEdit()
+  })
+  .catch(err=>{
+    console.log(err);
+    app.showError(err.message)
+  })
+}
+
+function closeModuleInfoEdit(){
+  findElement('.module-view .module-edit').classList.replace('fa-window-close','fa-pen-square')
+  findElement('.module-view .module-save').style.setProperty('display','none')
+  
+  findElement('.module-view .module_repo').style.setProperty('display','unset')
+  findElement('.module-view input[name="module_repo_edit"]').style.setProperty('display','none')
+
+  findElement('.module-view .module_desc').style.setProperty('display','unset')
+  findElement('.module-view textarea[name="module_desc_edit"]').style.setProperty('display','none')
+
+  findElement('.module-view .module-save').removeEventListener('click', saveModuleInfo)
+}
+
+function openModuleInfoEdit(){
+  findElement('.module-view .module-edit').classList.replace('fa-pen-square','fa-window-close')
+  findElement('.module-view .module-save').style.setProperty('display','block')
+  
+  findElement('.module-view .module_repo').style.setProperty('display','none')
+  findElement('.module-view input[name="module_repo_edit"]').style.setProperty('display','unset')
+
+  findElement('.module-view .module_desc').style.setProperty('display','none')
+  findElement('.module-view textarea[name="module_desc_edit"]').style.setProperty('display','unset')
+  
+  findElement('.module-view .module-save').addEventListener('click', saveModuleInfo)
+}
+
+function moduleInfoEditIsOpen(){
+  return findElement('.module-view .module-edit').classList.contains('fa-window-close')
+}
+
 ;(async function () {
   await loadModuleData()
 
@@ -138,26 +166,12 @@ async function loadModuleData(){
   });
 
   findElement('.module-view .module-edit').addEventListener('click',function(e){
-    if(e.target.classList.contains('fa-window-close')){
-      e.target.classList.replace('fa-window-close','fa-pen-square')
-      findElement('.module-view .module-save').style.setProperty('display','none')
-
-      findElement('.module-view .module_repo').style.setProperty('display','unset')
-      findElement('.module-view input[name="module_repo_edit"]').style.setProperty('display','none')
-    
-      findElement('.module-view .module_desc').style.setProperty('display','unset')
-      findElement('.module-view textarea[name="module_desc_edit"]').style.setProperty('display','none')
-      
+    if(moduleInfoEditIsOpen()){
+      closeModuleInfoEdit()
     }else{
-      e.target.classList.replace('fa-pen-square','fa-window-close')
-      findElement('.module-view .module-save').style.setProperty('display','block')
-      
-      findElement('.module-view .module_repo').style.setProperty('display','none')
-      findElement('.module-view input[name="module_repo_edit"]').style.setProperty('display','unset')
-    
-      findElement('.module-view .module_desc').style.setProperty('display','none')
-      findElement('.module-view textarea[name="module_desc_edit"]').style.setProperty('display','unset')
-
+      openModuleInfoEdit()
     }
   })
+
+  findElement('.module-view .module_name').addEventListener('click', syncActiveModule)
 })();
