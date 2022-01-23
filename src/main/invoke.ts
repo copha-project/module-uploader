@@ -1,9 +1,11 @@
+import { isWin32 } from '../common'
 import { ipcMain, dialog, IpcMainInvokeEvent, IpcMainEvent } from 'electron'
 import Utils from 'uni-utils'
 import App from './app'
 
 const CommandList: any = {
-    exit: () => App.getInstance().quit()
+    exit: () => App.getInstance().quit(),
+    isWin: ()=> isWin32
 }
 export default class Invoke {
     constructor(){
