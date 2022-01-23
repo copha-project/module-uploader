@@ -5,7 +5,7 @@ import hotReload from './hot-reload'
 import { changeDisplayPosition, changeWebPreferences } from "./windowConfig"
 import { merge } from "lodash"
 
-const isWin32 = os.platform() === 'win32'
+export const isWin32 = os.platform() === 'win32'
 
 export function getDevOption(): BrowserWindowConstructorOptions {
     let options = merge({}, changeDisplayPosition())

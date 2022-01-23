@@ -1,4 +1,5 @@
 import {BrowserWindowConstructorOptions, screen } from 'electron'
+import { isWin32 } from './dev'
 
 export function changeDisplayPosition(): BrowserWindowConstructorOptions{
     const displays = screen.getAllDisplays()
@@ -15,15 +16,20 @@ export function changeDisplayPosition(): BrowserWindowConstructorOptions{
 
     return {
         x: displays[0].bounds.x + 50,
-        y: displays[0].bounds.y + 550
+        y: displays[0].bounds.y + 50
     }
 }
 
 export function changeWebPreferences(): BrowserWindowConstructorOptions {
-    return {
+    const options: BrowserWindowConstructorOptions = {
         webPreferences:{
             devTools: true,
             nodeIntegration: true
         }
     }
+    if(isWin32){
+        options.frame = true
+        options.height = 700
+    }
+    return options
 }
