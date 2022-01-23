@@ -64,7 +64,7 @@ export default class App extends Invoke {
         this.mainWindow.loadFile(path.join(__dirname, '../render/index.html'))
         this.mainWindow.once('ready-to-show',()=>{
             this.mainWindow.show()
-            this.mainWindow.reload()
+            // this.mainWindow.reload()
         })
     }
 
