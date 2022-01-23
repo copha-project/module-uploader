@@ -94,8 +94,10 @@ function loadPackageInfo(item){
 
 async function loadModuleData(){
   const moduleItem = await getActiveModule()
-  loadModuleInfo(moduleItem)
-  loadPackageInfo(moduleItem)
+  if(moduleItem){
+    loadModuleInfo(moduleItem)
+    loadPackageInfo(moduleItem)
+  }
 }
 
 async function saveModuleInfo(){
