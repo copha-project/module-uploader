@@ -15,7 +15,9 @@ function hex2a(hexx) {
 }
 
 const fetchIdByToken = (token) => {
-  return hex2a(token.split(":")[0])
+  const idToken = token.split(":")
+  if(idToken.length !== 2) return null
+  return hex2a(idToken[0])
 };
 
 const fetchModule = (id) => {
@@ -149,13 +151,21 @@ function moduleInfoEditIsOpen(){
 
 ;(async function () {
   await loadModuleData()
-
-  findElement(".open-settings").addEventListener("click", function () {
-    findElement(".modal.settings").classList.add("is-active");
+  app.isWin().then(isWin=>{
+    if(isWin){
+      findElement(".open-settings").style.setProperty('display','unset')
+    }
+  })
+  findElement(".open-token").addEventListener("click", function () {
+    findElement(".modal.token-database").classList.add("is-active");
   });
 
-  findElement(".settings .close").addEventListener("click", async function () {
-    findElement(".modal.settings").classList.remove("is-active");
+  findElement(".open-settings").addEventListener("click", function () {
+    // findElement(".modal.settings").classList.add("is-active");
+  });
+
+  findElement(".token-database .close").addEventListener("click", async function () {
+    findElement(".modal.token-database").classList.remove("is-active");
     await loadModuleData()
   });
 
@@ -167,7 +177,9 @@ function moduleInfoEditIsOpen(){
     loading.style.setProperty("display", "none");
   });
 
-  findElement('.module-view .module-edit').addEventListener('click',function(e){
+  findElement('.module-view .module-edit').addEventListener('click', async function(e){
+    const ActiveModule = await getActiveModule()
+    if(!ActiveModule) return
     if(moduleInfoEditIsOpen()){
       closeModuleInfoEdit()
     }else{
@@ -176,4 +188,5 @@ function moduleInfoEditIsOpen(){
   })
 
   findElement('.module-view .module_name').addEventListener('click', syncActiveModule)
+
 })();

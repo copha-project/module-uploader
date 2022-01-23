@@ -13,12 +13,17 @@ function buildTokenItem(name,isActive,id){
 }
 
 async function addToken(){
-    const token = findElement('.settings .new-token').value
+    const token = findElement('.token-database .new-token').value
     if(!token) {
-        console.log('no token');
+        app.showError('no token')
         return
     }
     const id = fetchIdByToken(token)
+    if(!id) {
+        app.showError('token error')
+        return
+    }
+    console.log(id);
     const moduleData = await fetchModule(id)
     moduleData.token = token
     moduleData.active = false
@@ -26,9 +31,9 @@ async function addToken(){
         await addModule(moduleData)
         loadData()
     } catch (error) {
-        console.log(error.message);
+        app.showError(error.message)
     }
-    findElement('.settings .new-token').value = ''
+    findElement('.token-database .new-token').value = ''
 }
 
 function removeToken(id){
@@ -48,7 +53,7 @@ function activeToken(id){
 
 function loadData(){
     const modules = getModuleList()
-    const moduleList = findElement('.settings .token-list')
+    const moduleList = findElement('.token-database .token-list')
     moduleList.textContent = ''
     for (const m of modules) {
         moduleList.append(buildTokenItem(m.name, m.active, m.id))
@@ -59,7 +64,7 @@ const queryParent = (node, className) => node.nodeName !== 'HTML' ? node.parentN
 
 function initSettings(){
     loadData()
-    findElement('.settings .token-list').addEventListener('click', function(e){
+    findElement('.token-database .token-list').addEventListener('click', function(e){
         e.preventDefault()
         if(['DIV'].includes(e.target.tagName)) return
         const item = queryParent(e.target,'item')
@@ -74,5 +79,5 @@ function initSettings(){
 
 ;(function(){
     initSettings()
-    findElement('.settings .add-token').addEventListener('click', addToken)
+    findElement('.token-database .add-token').addEventListener('click', addToken)
 })()

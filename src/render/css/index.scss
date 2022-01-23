@@ -89,6 +89,9 @@ body {
   }
   .right-section {
     margin: 0px 5px 0 0;
+    .open-settings{
+      display: none;
+    }
   }
 }
 
@@ -278,7 +281,7 @@ body {
   }
 }
 
-.modal.settings {
+.modal.token-database {
   animation-duration: 0.5s;
   .content {
     display: flex;
