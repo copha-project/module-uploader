@@ -5,7 +5,8 @@ contextBridge.exposeInMainWorld('app', {
   isWin: ()=> ipcRenderer.invoke('cmd',"isWin"),
   api:{
     openFileSelectorDialog: () => ipcRenderer.invoke('openFileSelectorDialog'),
-    getModuleInfo: (filePath:string) => ipcRenderer.invoke('getFileHashData', filePath)
+    getModuleInfo: (filePath:string) => ipcRenderer.invoke('getFileHashData', filePath),
+    fetchIdFromToken: (token:string) => ipcRenderer.invoke('fetchIdFromToken', token)
   },
   showError: msg => ipcRenderer.send('showError', msg)
 })

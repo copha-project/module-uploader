@@ -1,16 +1,18 @@
-import { isWin32 } from '../common'
+import { isWin32,isUUID } from '../common'
 import { ipcMain, dialog, IpcMainInvokeEvent, IpcMainEvent } from 'electron'
 import Utils from 'uni-utils'
 import App from './app'
 
 const CommandList: any = {
     exit: () => App.getInstance().quit(),
-    isWin: ()=> isWin32
+    isWin: ()=> isWin32,
+    isUUID
 }
 export default class Invoke {
     constructor(){
         ipcMain.handle('openFileSelectorDialog', this.openFileSelectorDialog)
         ipcMain.handle('getFileHashData',this.getFileHashData)
+        ipcMain.handle('fetchIdFromToken', this.fetchIdFromToken)
         ipcMain.on('showError',this.showError)
         ipcMain.handle('cmd', this.cmd)
     }
@@ -39,10 +41,18 @@ export default class Invoke {
             message: args[0]||'unknow error'
         })
     }
+    async fetchIdFromToken(event:IpcMainEvent,token: string){
+        const idToken = token.split(":")
+        if(idToken.length !== 2) return ''
+        const id = Buffer.from(idToken[0],'hex').toString()
+        if(!isUUID(id)) return ''
+        return id
+    }
     cmd(event:IpcMainInvokeEvent, command:string ,...args:any[]){
         console.log('get command:', command);
         if(command in CommandList){
-            return CommandList[command]()
+            return CommandList[command](args)
         }
+        return 'no cmd'
     }
 }
