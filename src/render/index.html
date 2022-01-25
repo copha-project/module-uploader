@@ -89,7 +89,7 @@
                 </div>
               </div>
               <div class="package-view flex col">
-                <h2 class="name">No Package Info</h2>
+                <h2 class="name">Package Info</h2>
                 <div class="detail-view">
                   <div class="field">
                     <label class="field_name">Latest</label>
@@ -104,27 +104,27 @@
             </div>
             <div class="flex right-panel">
               <div class="loading animate__animated animate__faster
-                animate__zoomIn">
+                animate__zoomIn upload-loading-view">
                 <div class="upload-progress flex col">
-                  <div class="step">
-                    <span class="icon has-text-success">
-                      <i class="fas fa-2x fa-check-circle"></i>
-                    </span>
-                    <span class="info">Register package info</span>
-                  </div>
-                  <div class="step-gap"></div>
-                  <div class="step">
-                    <span class="icon has-text-info">
-                      <i class="fas fa-2x fa-spinner fa-pulse"></i>
-                    </span>
-                    <span class="info">Upload package</span>
-                  </div>
-                  <div class="step-gap"></div>
-                  <div class="step">
+                  <div class="step step-1">
                     <span class="icon has-text-white">
                       <i class="fas fa-2x fa-clock"></i>
                     </span>
-                    <span class="info">Done</span>
+                    <span class="info">Verify Module Info</span>
+                  </div>
+                  <div class="step-gap"></div>
+                  <div class="step step-2">
+                    <span class="icon has-text-white">
+                      <i class="fas fa-2x fa-clock"></i>
+                    </span>
+                    <span class="info">Upload Package</span>
+                  </div>
+                  <div class="step-gap"></div>
+                  <div class="step step-3">
+                    <span class="icon has-text-white">
+                      <i class="fas fa-2x fa-clock"></i>
+                    </span>
+                    <span class="info">Register Package Info</span>
                   </div>
                 </div>
                 <button class="button is-small is-danger cancel-upload"
@@ -138,9 +138,13 @@
                       <span class="file-icon">
                         <i class="fas fa-upload"></i>
                       </span>
-                      <span class="file-label">
+                      <!-- <span class="file-label">
                         Open module folder
+                      </span> -->
+                      <span class="file-label">
+                        Select .zip File
                       </span>
+                      <input type="hidden" name="tmpFile">
                     </span>
                   </label>
                 </div>
@@ -150,7 +154,7 @@
                     <label class="label">VERSION</label>
                     <div class="control">
                       <input class="input is-small" type="text" name="moduleVer"
-                        readonly placeholder="x.x.x">
+                        placeholder="x.x.x">
                     </div>
                   </div>
                   <div class="field">

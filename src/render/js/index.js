@@ -21,42 +21,133 @@ const getUploadPoint = async () => {
   return hosts_info.hosts[0] + hosts_info.api.upload;
 };
 
-const uploadModule = (postData, token) => {
-  getUploadPoint().then((uploadUrl) => {
-    console.log(postData);
-    // const request = new XMLHttpRequest()
-    // request.open("POST", uploadUrl);
-    // request.setRequestHeader("authorization",token)
-    // request.send(postData)
-  });
-};
-
 function findElement(e) {
   return document.querySelector(e);
 }
 
 function findElements(e) {
-  return document.querySelectorAll(e);
+  return Array.from(document.querySelectorAll(e))
 }
 
-function upload() {
-  findElement(".loading").style.setProperty("display", "flex");
-  // const token = localStorage.getItem("token");
-  // const version = findElement("input[name=moduleVer]").value;
-  // const formData = new FormData();
-  // formData.append("version", version);
+async function upload() {
+  const activeModule = await getActiveModule()
+  if(!activeModule) return
+  function sleep(t){
+    return new Promise(resolve => {
+      setTimeout(()=>{
+        resolve()
+      },t)
+    })
+  }
+  function closeLoading(){
+    findElement(".loading").style.setProperty("display", "none");
+    findElements('.upload-progress .step').map(resetTaskView)
+    const doneBtn = findElement('.upload-loading-view .button')
+    doneBtn.textContent = "Cancel"
+    doneBtn.classList.replace('is-success','is-danger')
+  }
+  function resetTaskView(step){
+    const iconSpan = step.querySelector('.icon')
+    const icon = iconSpan.querySelector('i')
 
-  // const fileDom = findElement("input[name=package]");
-  // formData.append("package", fileDom.files[0]);
-  // uploadModule(formData, token);
+    iconSpan.classList.remove('has-text-success','has-text-warning')
+    iconSpan.classList.add('has-text-white')
+    icon.classList.remove('fa-check-circle','fa-spinner','fa-pulse')
+    icon.classList.add('fa-clock')
+  }
+  function showStart(ele){
+    const iconSpan = ele.querySelector('.icon')
+    const icon = iconSpan.querySelector('i')
+    iconSpan.classList.replace('has-text-white','has-text-warning')
+    icon.classList.replace('fa-clock','fa-spinner')
+    icon.classList.add('fa-pulse')
+  }
+  function showEnd(ele){
+    const iconSpan = ele.querySelector('.icon')
+    const icon = iconSpan.querySelector('i')
+    iconSpan.classList.replace('has-text-warning','has-text-success')
+    icon.classList.remove('fa-spinner','fa-pulse')
+    icon.classList.add('fa-check-circle')
+  }
+  function changeToDoneView(){
+    const doneBtn = findElement('.upload-loading-view .button')
+    doneBtn.textContent = "Done"
+    doneBtn.classList.replace('is-danger','is-success')
+    findElement(".upload-loading-view .cancel-upload").addEventListener("click", closeLoading, {once:true});
+  }
+  async function verifyInfo(packageData){
+    const stepIcon = findElement('.upload-progress .step-1')
+    showStart(stepIcon)
+    await sleep(1000)
+    if(!packageData.version){
+      throw Error("not set version")
+    }
+    if(!await app.validateVersion(packageData.version)){
+      throw Error("version format error")
+    }
+    if(activeModule.packages.find(p=>p.version === packageData.version)){
+      throw Error("version already exists")
+    }
+    await sleep(1000)
+    showEnd(stepIcon)
+  }
+  async function uploadPackage(packageData){
+    const stepIcon = findElement('.upload-progress .step-2')
+    showStart(stepIcon)
+    await sleep(1000)
+    console.log(packageData,111);
+    await uploadRemotePackage(activeModule, packageData)
+    await sleep(1000)
+    showEnd(stepIcon)
+  }
+  async function registerVersion(packageData){
+    const stepIcon = findElement('.upload-progress .step-3')
+    showStart(stepIcon)
+    await sleep(1000)
+    delete packageData.package
+    await addRemotePackage(activeModule,packageData)
+    await sleep(1000)
+    showEnd(stepIcon)
+  }
+  
+  const filePath = findElement(".upload-view input[name=tmpFile]").value;
+  if(!filePath){
+    app.showError("no file selected!")
+    return
+  }
+  showLoading()
+  const packageData = {
+    package: filePath,
+    sha1: findElement("input[name=hashSha1]").value,
+    md5: findElement("input[name=hashMd5]").value,
+    version: findElement(".upload-view input[name=moduleVer]").value
+  }
+
+  try {
+    await verifyInfo(packageData)
+    await uploadPackage(packageData)
+    await registerVersion(packageData)
+    changeToDoneView()
+  } catch (error) {
+    app.showError(error.message)
+    console.log(error);
+    closeLoading()
+  }
 }
 
 async function openFileSelect(e) {
   const filePath = await app.api.openFileSelectorDialog();
-  if (!filePath) return;
+  if (!filePath) {
+    return
+  }
+  findElement('.upload-view input[name=tmpFile]').value = filePath
   const fileInfo = await app.api.getModuleInfo(filePath);
   findElement("input[name=hashSha1]").value = fileInfo.sha1;
   findElement("input[name=hashMd5]").value = fileInfo.md5;
+}
+
+function showLoading(){
+  findElement(".loading").style.setProperty("display", "flex");
 }
 
 function loadModuleInfo(item){
@@ -156,12 +247,8 @@ function moduleInfoEditIsOpen(){
   });
 
   findElement("#open-select-file").addEventListener("click", openFileSelect);
-  findElement(".submit").addEventListener("click", upload);
+  findElement(".upload-view .submit").addEventListener("click", upload);
   findElement(".quit").addEventListener("click", app.exit);
-  findElement(".cancel-upload").addEventListener("click", () => {
-    const loading = findElement(".loading");
-    loading.style.setProperty("display", "none");
-  });
 
   findElement('.module-view .module-edit').addEventListener('click', async function(e){
     const ActiveModule = await getActiveModule()

@@ -95,3 +95,17 @@ async function saveRemoteModule(module, updateData){
         token : module.token,
     })
 }
+
+async function addRemotePackage(module, packageData){
+    const reqUrl = api.list+module.name+'/packages'
+    // const reqUrl = 'http://localhost:4396/api/v1/modules/'+module.name+'/packages'
+    return reqBuilder(reqUrl,packageData, {
+        method: 'POST',
+        token : module.token,
+    })
+}
+
+async function uploadRemotePackage(module,{version,package}){
+    const uploadRes = await app.api.uploadPackage(module.token,package,version)
+    console.log(uploadRes);
+};
