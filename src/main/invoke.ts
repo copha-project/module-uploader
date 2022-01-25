@@ -1,6 +1,7 @@
 import { isWin32,isUUID } from '../common'
 import { ipcMain, dialog, IpcMainInvokeEvent, IpcMainEvent } from 'electron'
 import Utils from 'uni-utils'
+import compareVersions from 'compare-versions';
 import App from './app'
 
 const CommandList: any = {
@@ -13,6 +14,8 @@ export default class Invoke {
         ipcMain.handle('openFileSelectorDialog', this.openFileSelectorDialog)
         ipcMain.handle('getFileHashData',this.getFileHashData)
         ipcMain.handle('fetchIdFromToken', this.fetchIdFromToken)
+        ipcMain.handle('validateVersion', this.validateVersion)
+        ipcMain.handle('uploadPackage', this.uploadPackage)
         ipcMain.on('showError',this.showError)
         ipcMain.handle('cmd', this.cmd)
     }
@@ -41,12 +44,19 @@ export default class Invoke {
             message: args[0]||'unknow error'
         })
     }
-    async fetchIdFromToken(event:IpcMainEvent,token: string){
+    async fetchIdFromToken(event:IpcMainEvent, token:string){
         const idToken = token.split(":")
         if(idToken.length !== 2) return ''
         const id = Buffer.from(idToken[0],'hex').toString()
         if(!isUUID(id)) return ''
         return id
+    }
+    validateVersion(event:IpcMainEvent, s:string){
+        return compareVersions.validate(s)
+    }
+    uploadPackage(event:IpcMainEvent, token:string, filePath:string, version:string){
+        console.log(token,filePath,version);
+        return
     }
     cmd(event:IpcMainInvokeEvent, command:string ,...args:any[]){
         console.log('get command:', command);
