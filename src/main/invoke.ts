@@ -1,5 +1,5 @@
-import { isWin32,isUUID } from '../common'
-import { ipcMain, dialog, IpcMainInvokeEvent, IpcMainEvent } from 'electron'
+import { isWin32, isUUID, fetch } from '../common'
+import { ipcMain, dialog, IpcMainInvokeEvent, IpcMainEvent, net } from 'electron'
 import Utils from 'uni-utils'
 import compareVersions from 'compare-versions';
 import App from './app'
@@ -54,9 +54,26 @@ export default class Invoke {
     validateVersion(event:IpcMainEvent, s:string){
         return compareVersions.validate(s)
     }
-    uploadPackage(event:IpcMainEvent, token:string, filePath:string, version:string){
-        console.log(token,filePath,version);
-        return
+    async uploadPackage(event:IpcMainEvent, token:string, filePath:string, version:string){
+        const res = {code:1,msg:''}
+        try {
+            const uploadPoint = await App.getInstance().getUploadPoint()
+            console.log(token,filePath,version,uploadPoint);
+            const body = JSON.stringify({
+                package: Utils.readFile(filePath),
+                version: version
+            })
+            const uploadRes = await fetch(uploadPoint,body,{
+                method: "POST",
+            })
+            console.log(uploadRes);
+            
+            res.code = 0
+
+        } catch (error) {
+            res.msg = error.message
+        }
+        return res
     }
     cmd(event:IpcMainInvokeEvent, command:string ,...args:any[]){
         console.log('get command:', command);

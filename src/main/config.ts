@@ -1,8 +1,9 @@
 import { BrowserWindowConstructorOptions,app, BrowserViewConstructorOptions } from "electron"
 import { merge } from 'lodash'
-import { appIcon } from '../constants'
+import { appIcon, moduleHubPoint } from '../constants'
 import path from 'path'
 import { isMac, isWin32 } from "../common"
+
 const baseOptions: BrowserWindowConstructorOptions = {
     center: true,
     height: 600,
@@ -49,4 +50,9 @@ export function getOptions(){
         return macOptionsBuilder()
     }
     return baseOptions
+}
+
+export const API = {
+    modules : moduleHubPoint + "/api/v1/modules",
+    packagePoints : moduleHubPoint + "/package_hosts"
 }

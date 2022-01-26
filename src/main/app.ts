@@ -1,10 +1,10 @@
-import { BrowserWindowConstructorOptions, BrowserWindow, globalShortcut, app } from "electron"
-import { getOptions } from "./config"
+import { BrowserWindowConstructorOptions, BrowserWindow, globalShortcut, app, net } from "electron"
+import { getOptions, API } from "./config"
 import path from 'path'
 import Invoke from "./invoke"
 import { merge } from "lodash"
 import { setAppMenu } from "./menu"
-import { isMac } from '../common'
+import { isMac, fetch } from '../common'
 export default class App extends Invoke {
     static instance: App
     public mainWindow:BrowserWindow
@@ -34,7 +34,7 @@ export default class App extends Invoke {
             this.quit()
         }
 
-        app.on('ready', ()=> {
+        app.on('ready', async ()=> {
             App.getInstance().createWindow(optionsBuilder())
         })
 
@@ -69,6 +69,17 @@ export default class App extends Invoke {
     }
 
     registerShortcut(){
+    }
+
+    async getUploadPoint(){
+        let hostsInfo: uploadPointResp
+        try {
+            hostsInfo = await fetch(API.packagePoints) as uploadPointResp 
+        } catch (error) {
+            console.log('app', error);
+        }
+        if (!hostsInfo || hostsInfo.hosts?.length === 0) throw Error("not found a upload Point")
+        return hostsInfo.hosts[0] + hostsInfo.api.upload
     }
 
     quit(){
