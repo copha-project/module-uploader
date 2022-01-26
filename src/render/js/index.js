@@ -15,12 +15,6 @@ const fetchModule = (id) => {
   });
 };
 
-const getUploadPoint = async () => {
-  const hosts_info = await fetch(api.package_hosts).then((e) => e.json());
-  if (hosts_info.hosts.length == 0) throw Error("not found a upload Point");
-  return hosts_info.hosts[0] + hosts_info.api.upload;
-};
-
 function findElement(e) {
   return document.querySelector(e);
 }
@@ -95,7 +89,6 @@ async function upload() {
     const stepIcon = findElement('.upload-progress .step-2')
     showStart(stepIcon)
     await sleep(1000)
-    console.log(packageData,111);
     await uploadRemotePackage(activeModule, packageData)
     await sleep(1000)
     showEnd(stepIcon)

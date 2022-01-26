@@ -107,5 +107,6 @@ async function addRemotePackage(module, packageData){
 
 async function uploadRemotePackage(module,{version,package}){
     const uploadRes = await app.api.uploadPackage(module.token,package,version)
+    if(uploadRes.code!==0) throw Error(uploadRes.msg)
     console.log(uploadRes);
 };
