@@ -1,20 +1,3 @@
-const HOST = "https://hub.copha.net";
-
-const api = {
-  list: HOST + "/api/v1/modules/",
-  upload: HOST + "/upload",
-  package_hosts: HOST + "/package_hosts",
-};
-
-const fetchModule = (id) => {
-  return fetch(api.list + id).then(async (e) => {
-    if (e.ok) {
-      return e.json();
-    }
-    throw Error((await e.json()).message);
-  });
-};
-
 function findElement(e) {
   return document.querySelector(e);
 }
@@ -220,18 +203,16 @@ function moduleInfoEditIsOpen(){
 }
 
 ;(async function () {
+  
   await loadModuleData()
   app.isWin().then(isWin=>{
     if(isWin){
       findElement(".open-settings").style.setProperty('display','unset')
     }
   })
+
   findElement(".open-token").addEventListener("click", function () {
     findElement(".modal.token-database").classList.add("is-active");
-  });
-
-  findElement(".open-settings").addEventListener("click", function () {
-    // findElement(".modal.settings").classList.add("is-active");
   });
 
   findElement(".token-database .close").addEventListener("click", async function () {
@@ -252,7 +233,4 @@ function moduleInfoEditIsOpen(){
       openModuleInfoEdit()
     }
   })
-
-  findElement('.module-view .module_name').addEventListener('click', syncActiveModule)
-
 })();

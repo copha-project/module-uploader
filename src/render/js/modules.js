@@ -1,3 +1,11 @@
+const HOST = "https://hub.copha.net";
+
+const api = {
+  list: HOST + "/api/v1/modules/",
+  upload: HOST + "/upload",
+  package_hosts: HOST + "/package_hosts",
+};
+
 function getModuleList(){
     let modules = []
     try {
@@ -38,7 +46,7 @@ async function updateModule(module){
 
 async function syncActiveModule(){
     const localModule = await getActiveModule()
-    const moduleData = await fetchModule(localModule.id)
+    const moduleData = await fetchRemoteModule(localModule.id)
     moduleData.token = localModule.token
     moduleData.active = true
     return updateModule(moduleData)
@@ -109,4 +117,13 @@ async function uploadRemotePackage(module,{version,package}){
     const uploadRes = await app.api.uploadPackage(module.token,package,version)
     if(uploadRes.code!==0) throw Error(uploadRes.msg)
     console.log(uploadRes);
+};
+
+const fetchRemoteModule = (id) => {
+    return fetch(api.list + id).then(async (e) => {
+      if (e.ok) {
+        return e.json();
+      }
+      throw Error((await e.json()).message);
+    });
 };

@@ -88,7 +88,7 @@ body {
     }
   }
   .right-section {
-    margin: 0px 5px 0 0;
+    margin: 0px 15px 0 0;
     .open-settings{
       display: none;
     }
@@ -285,30 +285,36 @@ body {
   }
 }
 
-.modal.token-database {
+.modal.token-database,
+.modal.sys-settings {
   animation-duration: 0.5s;
   .content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 600px;
+    // width: 600px;
     height: 400px;
     background: #f8f8fff5;
     border-radius: 10px;
     padding: 20px;
     box-shadow: inset 0px -1px 10px 1px #0000002e;
+    >:last-child{
+      flex: 1;
+      border: 1px solid #8790e6;
+      border-radius: 6px;
+      padding: 5px;
+    }
     .head {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
     }
+    .token-input{
+      margin-bottom: 0;
+      margin-top: 6px;
+    }
     .token-list {
-      width: 560px;
-      height: 260px;
-      border: 1px solid #8790e6;
-      border-radius: 6px;
-      padding: 5px;
       overflow-y: scroll;
       .item {
         background-color: rgb(123, 183, 252);
@@ -322,6 +328,13 @@ body {
         span {
           vertical-align: text-bottom;
         }
+      }
+    }
+    .settings-list{
+      display: flex;
+      flex-direction: column;
+      .item{
+        margin: 5px;
       }
     }
   }

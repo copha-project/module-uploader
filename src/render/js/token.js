@@ -23,10 +23,11 @@ async function addToken(){
         app.showError('token error')
         return
     }
-    const moduleData = await fetchModule(id)
-    moduleData.token = token
-    moduleData.active = false
+    
     try {
+        const moduleData = await fetchRemoteModule(id)
+        moduleData.token = token
+        moduleData.active = false
         await addModule(moduleData)
         loadData()
     } catch (error) {
