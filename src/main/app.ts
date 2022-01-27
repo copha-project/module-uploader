@@ -82,6 +82,9 @@ export default class App extends Invoke {
         return hostsInfo.hosts[0] + hostsInfo.api.upload
     }
 
+    openDevTools(){
+        this.mainWindow.webContents.openDevTools()
+    }
     quit(){
         console.log("ready to exit app")
         this.mainWindow?.close()
@@ -91,7 +94,7 @@ export default class App extends Invoke {
     reload(){
         App.getInstance().mainWindow.webContents.reload()
     }
-
+    
     get browserWindowOptions(){
         return this.browserWindowOptionsBuilder()
     }

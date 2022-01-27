@@ -1,12 +1,14 @@
 import { isWin32, isUUID, fetch } from '../common'
-import { ipcMain, dialog, IpcMainInvokeEvent, IpcMainEvent, net } from 'electron'
+import { ipcMain, dialog, IpcMainInvokeEvent, IpcMainEvent, net, app } from 'electron'
 import Utils from 'uni-utils'
 import compareVersions from 'compare-versions';
 import App from './app'
 
 const CommandList: any = {
     exit: () => App.getInstance().quit(),
+    openDevTools: ()=> App.getInstance().openDevTools(),
     isWin: ()=> isWin32,
+    isPackaged: ()=> app.isPackaged,
     isUUID
 }
 export default class Invoke {

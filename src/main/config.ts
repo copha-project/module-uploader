@@ -1,4 +1,4 @@
-import { BrowserWindowConstructorOptions,app, BrowserViewConstructorOptions } from "electron"
+import { BrowserWindowConstructorOptions,screen, BrowserViewConstructorOptions } from "electron"
 import { merge } from 'lodash'
 import { appIcon, moduleHubPoint } from '../constants'
 import path from 'path'
@@ -8,7 +8,7 @@ const baseOptions: BrowserWindowConstructorOptions = {
     center: true,
     height: 600,
     width: 800,
-    minWidth: 600,
+    minWidth: 800,
     minHeight: 600,
     resizable: false,
     show: false,
@@ -22,15 +22,23 @@ const baseOptions: BrowserWindowConstructorOptions = {
     }
 }
 
+function getBaseWindowOptions(){
+    const mainDisplay = screen.getPrimaryDisplay()
+    // baseOptions.width = baseOptions.width * mainDisplay.scaleFactor
+    // baseOptions.height = baseOptions.height * mainDisplay.scaleFactor
+    // baseOptions.minHeight = baseOptions.minHeight * mainDisplay.scaleFactor
+    // baseOptions.minWidth = baseOptions.minWidth * mainDisplay.scaleFactor
+    return baseOptions
+}
+
 export function winOptionsBuilder(){
     const winOptions: BrowserWindowConstructorOptions = {
         icon: appIcon,
         // titleBarStyle: 'hidden'
         frame: false,
-        
         transparent: true
     }
-    return merge(baseOptions, winOptions)
+    return merge(getBaseWindowOptions(), winOptions)
 }
 
 export function macOptionsBuilder(){
@@ -39,7 +47,7 @@ export function macOptionsBuilder(){
         frame: false,
         opacity: 0.99,
     }
-    return merge(baseOptions, macOptions)
+    return merge(getBaseWindowOptions(), macOptions)
 }
 
 export function getOptions(){
