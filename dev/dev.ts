@@ -10,10 +10,9 @@ export const isWin32 = os.platform() === 'win32'
 export function getDevOption(): BrowserWindowConstructorOptions {
     let options = merge({}, changeDisplayPosition())
     options = merge(options, changeWebPreferences())
-    if(!isWin32){
-        options.resizable = true
-    }
+    options.resizable = true
     options.alwaysOnTop = true
+    // options.transparent = false
     return options
 }
 

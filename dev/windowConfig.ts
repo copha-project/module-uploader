@@ -28,8 +28,8 @@ export function changeWebPreferences(): BrowserWindowConstructorOptions {
         }
     }
     if(isWin32){
-        options.frame = true
-        options.height = 700
+        // options.frame = true
+        // options.height = 700
     }
     return options
 }
