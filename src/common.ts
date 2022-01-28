@@ -10,7 +10,7 @@ export function isUUID(s: string) {
     return validate(s)
 }
 
-export async function fetch(url:string, data?:any, options?:ClientRequestConstructorOptions){
+export async function fetch(url:string, body?:any, options?:ClientRequestConstructorOptions){
     return new Promise((resolve,reject)=>{
         const urlData = urlToHttpOptions(new URL(url)) as ClientRequestConstructorOptions
         const request = net.request({
@@ -52,6 +52,9 @@ export async function fetch(url:string, data?:any, options?:ClientRequestConstru
             console.log('error',e);
             reject(e)
         })
+        if(body){
+            request.write(body)
+        }
         request.end()
     })
 }

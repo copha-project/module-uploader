@@ -12,5 +12,6 @@ contextBridge.exposeInMainWorld('app', {
     uploadPackage: (...args: string[])=> ipcRenderer.invoke('uploadPackage', ...args)
   },
   showError: msg => ipcRenderer.send('showError', msg),
+  showMsg: msg => ipcRenderer.send('showMsg', msg),
   openDevTools: ()=> ipcRenderer.invoke('cmd', "openDevTools")
 })
