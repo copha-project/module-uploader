@@ -6,6 +6,12 @@ function findElements(e) {
   return Array.from(document.querySelectorAll(e))
 }
 
+function versionPatchIncrement(version){
+  let verArr = version.split('.')
+  verArr[verArr.length-1] ++
+  return verArr.join('.')
+}
+
 async function upload() {
   const activeModule = await getActiveModule()
   if(!activeModule) return
@@ -112,6 +118,8 @@ async function upload() {
 }
 
 async function openFileSelect(e) {
+  const activeModule = await getActiveModule()
+  if(!activeModule) return
   const filePath = await app.api.openFileSelectorDialog();
   if (!filePath) {
     return
@@ -120,6 +128,9 @@ async function openFileSelect(e) {
   const fileInfo = await app.api.getModuleInfo(filePath);
   findElement("input[name=hashSha1]").value = fileInfo.sha1;
   findElement("input[name=hashMd5]").value = fileInfo.md5;
+  if(activeModule.packages.length>0){
+    findElement("input[name=moduleVer]").value = versionPatchIncrement(activeModule.packages[0].version);
+  }
 }
 
 function showLoading(){

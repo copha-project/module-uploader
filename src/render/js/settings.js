@@ -12,6 +12,7 @@ function initEvent(){
     findElement(settingsSelector + ' .resync').addEventListener('click', async ()=>{
         await syncActiveModule()
         await loadModuleData()
+        app.showMsg("Sync module info success.")
     })
 }
 
