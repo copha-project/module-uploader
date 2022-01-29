@@ -1,7 +1,7 @@
 import { isWin32, isUUID, fetch } from '../common'
 import { ipcMain, dialog, IpcMainInvokeEvent, IpcMainEvent, net, app, BrowserWindow } from 'electron'
 import Utils from 'uni-utils'
-import fd from 'form-data'
+import FormData from 'form-data'
 import fs from 'fs'
 import compareVersions from 'compare-versions';
 import App from './app'
@@ -70,21 +70,20 @@ export default class Invoke {
         const res = {code:1,msg:''}
         try {
             const uploadPoint = await App.getInstance().getUploadPoint()
-            console.log(token,filePath,version,uploadPoint);
-
-            const body = new fd()
-            body.append('package', await Utils.readFile(filePath))
+            // const uploadPoint = "http://127.0.0.1:3456/upload"
+            // console.log(token,filePath,version,uploadPoint);
+            const body = new FormData()
+            body.append('package', fs.readFileSync(filePath), "package.zip")
             body.append('version', version)
             body.append('authorization', token)
-            
-            const uploadRes = await fetch(uploadPoint,body.getBuffer(),{
+
+            await fetch(uploadPoint,body,{
                 method: "POST"
             })
-            console.log(uploadRes)
             res.code = 0
 
         } catch (error) {
-            res.msg = error.message
+            res.msg = error?.message || "unknown error"
         }
         return res
     }

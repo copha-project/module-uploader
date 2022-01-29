@@ -2,6 +2,7 @@ import os from 'os'
 import { urlToHttpOptions, URL } from 'url'
 import { validate } from 'uuid'
 import {net, ClientRequestConstructorOptions} from 'electron'
+import FormData from 'form-data'
 
 export const isWin32 = os.platform() === 'win32'
 export const isMac = os.platform() === 'darwin'
@@ -10,13 +11,15 @@ export function isUUID(s: string) {
     return validate(s)
 }
 
-export async function fetch(url:string, body?:any, options?:ClientRequestConstructorOptions){
+export async function fetch(url:string, body?:FormData, options?:ClientRequestConstructorOptions){
     return new Promise((resolve,reject)=>{
         const urlData = urlToHttpOptions(new URL(url)) as ClientRequestConstructorOptions
         const request = net.request({
             ...urlData,
+            
             ...options
         })
+
         const resp = {
             code: 200,
             headers: {},
@@ -53,7 +56,12 @@ export async function fetch(url:string, body?:any, options?:ClientRequestConstru
             reject(e)
         })
         if(body){
-            request.write(body)
+            const bodyHeaders = body.getHeaders()
+            if(bodyHeaders['content-type']){
+                request.setHeader('content-type', bodyHeaders['content-type'])
+            }
+            
+            request.write(body.getBuffer())
         }
         request.end()
     })
