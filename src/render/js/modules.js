@@ -46,6 +46,7 @@ async function updateModule(module){
 
 async function syncActiveModule(){
     const localModule = await getActiveModule()
+    if(!localModule) return
     const moduleData = await fetchRemoteModule(localModule.id)
     moduleData.token = localModule.token
     moduleData.active = true

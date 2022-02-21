@@ -14,7 +14,10 @@ function versionPatchIncrement(version){
 
 async function upload() {
   const activeModule = await getActiveModule()
-  if(!activeModule) return
+  if(!activeModule) {
+    app.showError("no module selected")
+    return
+  }
   function sleep(t){
     return new Promise(resolve => {
       setTimeout(()=>{
