@@ -6381,10 +6381,10 @@ undertaker@^1.2.1:
     object.reduce "^1.0.0"
     undertaker-registry "^1.0.0"
 
-uni-utils@^1.0.18:
-  version "1.0.18"
-  resolved "https://registry.yarnpkg.com/uni-utils/-/uni-utils-1.0.18.tgz#51373e08433db128f828e0eab1c047cb74f03ae4"
-  integrity sha512-CCd9P9fcRuQR94+we3qLKZGthP+dDL2XwJaiw+ZF2IzfY/km/4V3+ose/H2OyEJ6Zj3LkWyF/CVm9fFD/Z2ITw==
+uni-utils@^1.0.19:
+  version "1.0.19"
+  resolved "https://registry.npmmirror.com/uni-utils/-/uni-utils-1.0.19.tgz#ddb48783a9db8cb022f362a591a968dc24980bba"
+  integrity sha512-XnBm/QYG1vCQnT4rjzHeg4TMbsmqG7i23cJa89ilifjLFlD6OJwQaCJcC4uAznH+FplOdB+tQjtRCg7EF5OQnw==
   dependencies:
     cheerio "^1.0.0-rc.10"
     cli-progress "^3.8.0"
