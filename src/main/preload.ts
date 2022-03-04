@@ -1,4 +1,4 @@
-import { app, BrowserWindow, contextBridge, ipcRenderer } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 
 contextBridge.exposeInMainWorld('app', {
   exit: ()=> ipcRenderer.invoke('cmd',"exit"),
@@ -11,7 +11,7 @@ contextBridge.exposeInMainWorld('app', {
     fetchIdFromToken: (token:string) => ipcRenderer.invoke('fetchIdFromToken', token),
     uploadPackage: (...args: string[])=> ipcRenderer.invoke('uploadPackage', ...args)
   },
-  showError: msg => ipcRenderer.send('showError', msg),
-  showMsg: msg => ipcRenderer.send('showMsg', msg),
+  showError: (msg:string) => ipcRenderer.send('showError', msg),
+  showMsg: (msg:string) => ipcRenderer.send('showMsg', msg),
   openDevTools: ()=> ipcRenderer.invoke('cmd', "openDevTools")
 })

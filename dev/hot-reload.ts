@@ -87,7 +87,7 @@ export default function elecronReload (glob: any, options:any) {
     if(file.match(/src[\/|\\]render[\/|\\].+\.scss/)){
       gulp.series('scss')(renderReloadHandler)
     }
-    if(file.match(/src[\/|\\]render[\/|\\]/)){
+    if(file.match(/src[\/|\\]render[\/|\\]/) || file.match(/src[\/|\\]assets[\/|\\]/) ){
       gulp.series('copy-file')(renderReloadHandler)
     }
     if(file.match(/src[\/|\\]main[\/|\\]/)){

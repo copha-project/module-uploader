@@ -5,7 +5,16 @@ const merge = require('merge2')
 const sass = require('gulp-sass')(require('sass'))
 
 const paths = {
-    resource: ["src/render/**/*"],
+    staticResource: {
+      "src/render/**/*": {
+        to: "dist/render",
+        ignore: ["src/render/**/*.scss"]
+      },
+      "src/assets/**/*": {
+        to: "dist/assets",
+        ignore: []
+      }
+    },
     css: ["src/render/**/*.scss"]
 }
 
@@ -15,10 +24,13 @@ function scssTask(){
         .pipe(gulp.dest('./dist/render'))
 }
 
-function staticTask() {
-  return gulp.src(paths.resource, {
-    ignore: paths.css
-  }).pipe(gulp.dest("dist/render"))
+function staticTask(cb=()=>{}) {
+  for (const from in paths.staticResource) {
+    gulp.src(from, {
+      ignore: paths.staticResource[from].ignore
+    }).pipe(gulp.dest(paths.staticResource[from].to))
+  }
+  cb()
 }
 
 function tsTask() {

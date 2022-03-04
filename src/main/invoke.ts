@@ -1,10 +1,11 @@
 import { isWin32, isUUID, fetch } from '../common'
-import { ipcMain, dialog, IpcMainInvokeEvent, IpcMainEvent, net, app, BrowserWindow } from 'electron'
+import { ipcMain, dialog, IpcMainInvokeEvent, IpcMainEvent, app } from 'electron'
 import Utils from 'uni-utils'
 import FormData from 'form-data'
 import fs from 'fs'
 import compareVersions from 'compare-versions';
 import App from './app'
+import { showErrorMessage, showInfoMessage } from './message'
 
 const CommandList: any = {
     exit: () => App.getInstance().quit(),
@@ -45,16 +46,10 @@ export default class Invoke {
         }
     }
     async showError(event:IpcMainEvent, ...args:any[]) {
-        dialog.showMessageBox(App.getInstance().mainWindow,{
-            type: 'error',
-            message: args[0]||'unknow error'
-        })
+        return showErrorMessage(args[0], 'an error occurs')
     }
     async showMsg(event: IpcMainEvent, ...args:string[]){
-        dialog.showMessageBox(BrowserWindow.getFocusedWindow(),{
-            type: 'info',
-            message: args[0]
-        })
+        return showInfoMessage(args[0], "")
     }
     async fetchIdFromToken(event:IpcMainEvent, token:string){
         const idToken = token.split(":")
