@@ -122,9 +122,13 @@ async function upload() {
 
 async function openFileSelect(e) {
   const activeModule = await getActiveModule()
-  if(!activeModule) return
+  if(!activeModule) {
+    app.showError("no module selected")
+    return
+  }
   const filePath = await app.api.openFileSelectorDialog();
   if (!filePath) {
+    app.showError("no file selected")
     return
   }
   findElement('.upload-view input[name=tmpFile]').value = filePath
