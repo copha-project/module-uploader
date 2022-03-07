@@ -1,6 +1,7 @@
 import { BrowserWindowConstructorOptions,screen, BrowserViewConstructorOptions } from "electron"
 import { merge } from 'lodash'
-import { appIcon, moduleHubPoint } from '../constants'
+import { moduleHubPoint } from '../constants'
+import { appIcon } from './constants'
 import path from 'path'
 import { isMac, isWin32 } from "../common"
 
