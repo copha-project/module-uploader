@@ -46,7 +46,10 @@ async function updateModule(module){
 
 async function syncActiveModule(){
     const localModule = await getActiveModule()
-    if(!localModule) return
+    if(!localModule) {
+        app.showError("no module selected")
+        return
+    }
     const moduleData = await fetchRemoteModule(localModule.id)
     moduleData.token = localModule.token
     moduleData.active = true

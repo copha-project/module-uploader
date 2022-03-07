@@ -10,13 +10,7 @@ async function upload() {
     app.showError("no module selected")
     return
   }
-  function sleep(t){
-    return new Promise(resolve => {
-      setTimeout(()=>{
-        resolve()
-      },t)
-    })
-  }
+  
   function closeLoading(){
     findElement(".loading").style.setProperty("display", "none");
     findElements('.upload-progress .step').map(resetTaskView)
@@ -147,6 +141,7 @@ function loadModuleInfo(item){
   findElement('.module-view .module_desc').textContent = item.desc
   findElement('.module-view textarea[name="module_desc_edit"]').value = item.desc
 }
+
 function loadPackageInfo(item){
   if(item.packages.length){
     findElement('.package-view .module_latest').textContent = item.packages[0].version
@@ -212,27 +207,29 @@ function moduleInfoEditIsOpen(){
   return findElement('.module-view .module-edit').classList.contains('fa-window-close')
 }
 
+function showTokenDialog(){
+  findElement(".modal.token-database").classList.add("is-active");
+}
+
+async function closeTokenDialog(){
+  findElement(".modal.token-database").classList.remove("is-active");
+  await loadModuleData()
+}
+
+function quitApp(){
+  app.exit()
+}
+
 ;(async function () {
   
   await loadModuleData()
-  app.isWin().then(isWin=>{
-    if(isWin){
-      findElement(".open-settings").style.setProperty('display','unset')
-    }
-  })
-
-  findElement(".open-token").addEventListener("click", function () {
-    findElement(".modal.token-database").classList.add("is-active");
-  });
-
-  findElement(".token-database .close").addEventListener("click", async function () {
-    findElement(".modal.token-database").classList.remove("is-active");
-    await loadModuleData()
-  });
+  
+  findElement(".open-token").addEventListener("click", showTokenDialog);
+  findElement(".modal.token-database .close").addEventListener("click", closeTokenDialog);
 
   findElement("#open-select-file").addEventListener("click", openFileSelect);
   findElement(".upload-view .submit").addEventListener("click", upload);
-  findElement(".quit").addEventListener("click", app.exit);
+  findElement(".quit").addEventListener("click", quitApp);
 
   findElement('.module-view .module-edit').addEventListener('click', async function(e){
     const ActiveModule = await getActiveModule()
