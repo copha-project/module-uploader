@@ -207,15 +207,6 @@ function moduleInfoEditIsOpen(){
   return findElement('.module-view .module-edit').classList.contains('fa-window-close')
 }
 
-function showTokenDialog(){
-  findElement(".modal.token-database").classList.add("is-active");
-}
-
-async function closeTokenDialog(){
-  findElement(".modal.token-database").classList.remove("is-active");
-  await loadModuleData()
-}
-
 function quitApp(){
   app.exit()
 }
@@ -224,9 +215,8 @@ function quitApp(){
   
   await loadModuleData()
   
-  findElement(".open-token").addEventListener("click", showTokenDialog);
-  findElement(".modal.token-database .close").addEventListener("click", closeTokenDialog);
-
+  findElement(".open-module-list").addEventListener("click", showModuleListDialog);
+  
   findElement("#open-select-file").addEventListener("click", openFileSelect);
   findElement(".upload-view .submit").addEventListener("click", upload);
   findElement(".quit").addEventListener("click", quitApp);

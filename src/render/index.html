@@ -25,7 +25,7 @@
             </div>
             <div class="right-section">
               <button type="button" class="button is-info is-outlined
-                open-token">
+                open-module-list">
                 <span class="icon is-large">
                   <i class="fas fa-bars fa-lg"></i>
                 </span>
@@ -179,13 +179,13 @@
             </div>
           </div>
 
-          <div class="modal token-database animate__fadeIn animate__zoomIn">
+          <div class="modal module-list-dialog animate__fadeIn animate__zoomIn">
             <!-- <div class="modal-background"></div> -->
             <div class="modal-content">
               <div class="content">
                 <div class="head">
                   <div>
-                    Module Token
+                    Module List
                   </div>
                   <button type="button" class="button is-info is-outlined
                     is-small close">
@@ -194,21 +194,21 @@
                     </span>
                   </button>
                 </div>
-                <div class="field has-addons token-input">
+                <div class="field has-addons module-id-input">
                   <p class="control has-icons-left is-expanded">
-                    <input class="input is-small new-token" type="text"
-                      placeholder="copha module token">
+                    <input class="input is-small module-id" type="text"
+                      placeholder="copha module id">
                     <span class="icon is-small is-left">
                       <i class="fas fa-lock"></i>
                     </span>
                   </p>
                   <p class="control">
-                    <a class="button is-primary is-small add-token">
-                      Add Token
+                    <a class="button is-primary is-small add-module">
+                      Add Module
                     </a>
                   </p>
                 </div>
-                <div class="token-list"></div>
+                <div class="module-list"></div>
               </div>
             </div>
             <!-- <button class="modal-close is-large" aria-label="close"></button> -->
@@ -243,8 +243,8 @@
     </div>
   </body>
   <script src="./js/core.js"></script>
+  <script src="./js/module-helper.js"></script>
   <script src="./js/modules.js"></script>
-  <script src="./js/index.js"></script>
-  <script src="./js/token.js"></script>
   <script src="./js/settings.js"></script>
+  <script src="./js/index.js"></script>
 </html>

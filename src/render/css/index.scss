@@ -285,7 +285,7 @@ body {
   }
 }
 
-.modal.token-database,
+.modal.module-list-dialog,
 .modal.sys-settings {
   animation-duration: 0.5s;
   .content {
@@ -310,11 +310,11 @@ body {
       justify-content: space-between;
       align-items: center;
     }
-    .token-input{
+    .module-id-input{
       margin-bottom: 0;
       margin-top: 6px;
     }
-    .token-list {
+    .module-list {
       overflow-y: scroll;
       .item {
         background-color: rgb(123, 183, 252);
