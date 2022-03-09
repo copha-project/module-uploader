@@ -1,12 +1,11 @@
-const HOST = "https://hub.copha.net";
+function ModuleManager(options){
+    this.HOST = options.host
+    this.api = {
+        list: this.HOST + "/api/v1/modules/"
+    }
+}
 
-const api = {
-  list: HOST + "/api/v1/modules/",
-  upload: HOST + "/upload",
-  package_hosts: HOST + "/package_hosts",
-};
-
-function getModuleList(){
+ModuleManager.prototype.getModuleList = function(){
     let modules = []
     try {
         modules = JSON.parse(localStorage.modules || '[]')
@@ -16,48 +15,48 @@ function getModuleList(){
     return modules
 }
 
-function saveModuleList(list){
+ModuleManager.prototype.saveModuleList = function(list){
     localStorage.setItem('modules', JSON.stringify(list))
 }
 
-async function addModule(m){
-    const modules = getModuleList()
+ModuleManager.prototype.addModule = function (m){
+    const modules = this.getModuleList()
     if(modules.find(e=>e.id === m.id)) throw Error('token has exist!')
     modules.push(m)
-    saveModuleList(modules)
+    this.saveModuleList(modules)
 }
 
-async function delModule(id){
-    const modules = getModuleList()
+ModuleManager.prototype.delModule = function (id){
+    const modules = this.getModuleList()
     const index = modules.findIndex(e=>e.id === id)
     if(index === -1) throw Error('token not exist!')
     modules.splice(index,1)
-    saveModuleList(modules)
+    this.saveModuleList(modules)
 }
 
-async function updateModule(module){
-    const modules = getModuleList()
+ModuleManager.prototype.updateModule = function (module){
+    const modules = this.getModuleList()
     const index = modules.findIndex(e=>e.id === module.id)
     if(index === -1) throw Error('token not exist!')
     modules.splice(index,1)
     modules.push(module)
-    saveModuleList(modules)
+    this.saveModuleList(modules)
 }
 
-async function syncActiveModule(){
-    const localModule = await getActiveModule()
+ModuleManager.prototype.syncActiveModule = async function (){
+    const localModule = this.getActiveModule()
     if(!localModule) {
         app.showError("no module selected")
         return
     }
-    const moduleData = await fetchRemoteModule(localModule.id)
+    const moduleData = await this.fetchRemoteModule(localModule.id)
     moduleData.token = localModule.token
     moduleData.active = true
-    return updateModule(moduleData)
+    this.updateModule(moduleData)
 }
 
-async function activeModule(id){
-    const modules = getModuleList()
+ModuleManager.prototype.activeModule = function (id){
+    const modules = this.getModuleList()
     modules.map(e=>{
         if(e.id === id){
             e.active = true
@@ -65,22 +64,22 @@ async function activeModule(id){
             e.active = false
         }
     })
-    saveModuleList(modules)
+    this.saveModuleList(modules)
 }
 
-async function getActiveModule(){
-    const modules = await getModuleList()
+ModuleManager.prototype.getActiveModule = function (){
+    const modules = this.getModuleList()
     if(!modules.length) return null
     let activeModule = modules.find(e=>e.active)
     if(!activeModule){
         modules[0].active = true
-        await saveModuleList(modules)
+        this.saveModuleList(modules)
         activeModule = modules[0]
     }
     return activeModule
 }
 
-async function reqBuilder(url = '', data = {}, options = {}) {
+ModuleManager.prototype.reqBuilder = async function (url = '', data = {}, options = {}) {
     // Default options are marked with *
     const response = await fetch(url, {
         method: options.method || 'GET', // *GET, POST, PUT, DELETE, etc.
@@ -88,8 +87,8 @@ async function reqBuilder(url = '', data = {}, options = {}) {
         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
         credentials: 'same-origin', // include, *same-origin, omit
         headers: {
-        'Content-Type': 'application/json',
-        'authorization': options.token || '',
+            'Content-Type': 'application/json',
+            'authorization': options.token || '',
         },
         redirect: 'follow', // manual, *follow, error
         referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
@@ -100,16 +99,16 @@ async function reqBuilder(url = '', data = {}, options = {}) {
     return resData; // parses JSON response into native JavaScript objects
 }
 
-async function saveRemoteModule(module, updateData){
-    const reqUrl = api.list+module.name
-    return reqBuilder(reqUrl,updateData, {
+ModuleManager.prototype.saveRemoteModule = async function (module, updateData){
+    const reqUrl = this.api.list + module.id
+    return reqBuilder(reqUrl, updateData, {
         method: 'PUT',
         token : module.token,
     })
 }
 
-async function addRemotePackage(module, packageData){
-    const reqUrl = api.list+module.name+'/packages'
+ModuleManager.prototype.addRemotePackage = async function (module, packageData){
+    const reqUrl = this.api.list + module.id + '/packages'
     // const reqUrl = 'http://localhost:4396/api/v1/modules/'+module.name+'/packages'
     return reqBuilder(reqUrl,packageData, {
         method: 'POST',
@@ -117,14 +116,14 @@ async function addRemotePackage(module, packageData){
     })
 }
 
-async function uploadRemotePackage(module,{version,package}){
-    const uploadRes = await app.api.uploadPackage(module.token,package,version)
+ModuleManager.prototype.uploadRemotePackage = async function (module,{version,package}){
+    const uploadRes = await app.api.uploadPackage(module.id, module.token, package, version)
     if(uploadRes.code!==0) throw Error(uploadRes.msg)
     console.log(uploadRes);
 };
 
-const fetchRemoteModule = (id) => {
-    return fetch(api.list + id).then(async (e) => {
+ModuleManager.prototype.fetchRemoteModule = async function(id) {
+    return fetch(this.api.list + id).then(async (e) => {
       if (e.ok) {
         return e.json()
       }

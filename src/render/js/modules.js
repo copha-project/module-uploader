@@ -51,7 +51,7 @@ function activeModule(id){
 }
 
 function loadModuleList(){
-    const modules = getModuleList()
+    const modules = moduleManager.getModuleList()
     const moduleList = findElement(moduleListDialogSelector + '.module-list')
     moduleList.textContent = ''
     for (const m of modules) {
@@ -62,10 +62,6 @@ function loadModuleList(){
 async function closeModuleListDialog(){
     findElement(moduleListDialogSelector).classList.remove("is-active");
     await loadModuleData()
-}
-
-function showModuleListDialog(){
-    findElement(moduleListDialogSelector).classList.add("is-active");
 }
 
 function moduleItemClickEvent(e){

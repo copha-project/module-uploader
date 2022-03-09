@@ -153,7 +153,7 @@ function loadPackageInfo(item){
 }
 
 async function loadModuleData(){
-  const moduleItem = await getActiveModule()
+  const moduleItem = await moduleManager.getActiveModule()
   if(moduleItem){
     loadModuleInfo(moduleItem)
     loadPackageInfo(moduleItem)
@@ -207,12 +207,17 @@ function moduleInfoEditIsOpen(){
   return findElement('.module-view .module-edit').classList.contains('fa-window-close')
 }
 
+function showModuleListDialog(){
+  findElement(moduleListDialogSelector).classList.add("is-active");
+}
+
 function quitApp(){
   app.exit()
 }
 
-;(async function () {
-  
+;(async function (w) {
+  const moduleManager = new ModuleManager({host: 'https://hub.copha.net'})
+  w.moduleManager = moduleManager
   await loadModuleData()
   
   findElement(".open-module-list").addEventListener("click", showModuleListDialog);
@@ -230,4 +235,4 @@ function quitApp(){
       openModuleInfoEdit()
     }
   })
-})();
+})(window);
