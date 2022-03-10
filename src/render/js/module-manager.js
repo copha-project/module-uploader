@@ -46,8 +46,7 @@ ModuleManager.prototype.updateModule = function (module){
 ModuleManager.prototype.syncActiveModule = async function (){
     const localModule = this.getActiveModule()
     if(!localModule) {
-        app.showError("no module selected")
-        return
+        throw new Error("no module selected")
     }
     const moduleData = await this.fetchRemoteModule(localModule.id)
     moduleData.token = localModule.token

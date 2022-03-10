@@ -5,7 +5,7 @@ function versionPatchIncrement(version){
 }
 
 async function upload() {
-  const activeModule = await getActiveModule()
+  const activeModule = await moduleManager.getActiveModule()
   if(!activeModule) {
     app.showError("no module selected")
     return
@@ -67,7 +67,7 @@ async function upload() {
     const stepIcon = findElement('.upload-progress .step-2')
     showStart(stepIcon)
     await sleep(1000)
-    await uploadRemotePackage(activeModule, packageData)
+    await moduleManager.uploadRemotePackage(activeModule, packageData)
     await sleep(1000)
     showEnd(stepIcon)
   }
@@ -76,7 +76,7 @@ async function upload() {
     showStart(stepIcon)
     await sleep(1000)
     delete packageData.package
-    await addRemotePackage(activeModule,packageData)
+    await moduleManager.addRemotePackage(activeModule,packageData)
     await sleep(1000)
     showEnd(stepIcon)
   }
@@ -107,20 +107,20 @@ async function upload() {
 }
 
 async function openFileSelect(e) {
-  const activeModule = await getActiveModule()
+  const activeModule = await moduleManager.getActiveModule()
   if(!activeModule) {
     app.showError("no module selected")
     return
   }
-  const filePath = await app.api.openFileSelectorDialog();
+  const filePath = await app.api.openFileSelectorDialog()
   if (!filePath) {
     app.showError("no file selected")
     return
   }
   findElement('.upload-view input[name=tmpFile]').value = filePath
-  const fileInfo = await app.api.getModuleInfo(filePath);
-  findElement("input[name=hashSha1]").value = fileInfo.sha1;
-  findElement("input[name=hashMd5]").value = fileInfo.md5;
+  const fileInfo = await app.api.getModuleInfo(filePath)
+  findElement("input[name=hashSha1]").value = fileInfo.sha1
+  findElement("input[name=hashMd5]").value = fileInfo.md5
   if(activeModule.packages.length>0){
     findElement("input[name=moduleVer]").value = versionPatchIncrement(activeModule.packages[0].version);
   }
@@ -165,9 +165,9 @@ async function saveModuleInfo(){
   const desc = findElement('.module-view textarea[name="module_desc_edit"]').value
 
   if(!repo || !desc) return
-  const moduleItem = await getActiveModule()
+  const moduleItem = await moduleManager.getActiveModule()
   if(moduleItem.repo === repo && moduleItem.desc === desc) return
-  saveRemoteModule(moduleItem,{repository: repo,desc})
+  moduleManager.saveRemoteModule(moduleItem,{repository: repo,desc})
   .then(res=>{
     closeModuleInfoEdit()
   })

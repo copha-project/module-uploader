@@ -18,7 +18,7 @@ function closeSettingsDialog(){
 
 async function syncModuleData(){
     try {
-        await syncActiveModule()
+        await moduleManager.syncActiveModule()
         await loadModuleData()
     } catch (error) {
         app.showError(error.message)
