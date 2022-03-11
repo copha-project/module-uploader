@@ -27,15 +27,17 @@ async function addModule(){
         moduleData.active = false
         await moduleManager.addModule(moduleData)
         loadModuleList()
+        await loadModuleData()
     } catch (error) {
         app.showError(error.message)
     }
     findElement(moduleListDialogSelector + '.module-id').value = ''
 }
 
-function removeModule(id){
+async function removeModule(id){
     try {
-        delModule(id)
+        moduleManager.delModule(id)
+        await loadModuleData()
     } catch (error) {
         app.showError(error.message)
     }
@@ -58,9 +60,8 @@ function loadModuleList(){
     }
 }
 
-async function closeModuleListDialog(){
-    findElement(moduleListDialogSelector).classList.remove("is-active");
-    await loadModuleData()
+function closeModuleListDialog(){
+    findElement(moduleListDialogSelector).classList.remove("is-active")
 }
 
 function moduleItemClickEvent(e){

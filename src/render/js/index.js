@@ -130,20 +130,25 @@ function showLoading(){
   findElement(".loading").style.setProperty("display", "flex");
 }
 
-function loadModuleInfo(item){
-  findElement('.module-view .module_name').textContent = item.name
-  findElement('.module-view .module_id').textContent = item.id
-  findElement('.module-view .module_type').textContent = item.type
-  
-  findElement('.module-view .module_repo').textContent = item.repository
-  findElement('.module-view input[name="module_repo_edit"]').value = item.repository
+function resetModuleInfo(){
+  loadModuleInfo({})
+  loadPackageInfo({})
+}
 
-  findElement('.module-view .module_desc').textContent = item.desc
-  findElement('.module-view textarea[name="module_desc_edit"]').value = item.desc
+function loadModuleInfo(item){
+  findElement('.module-view .module_name').textContent = item.name || 'No Module'
+  findElement('.module-view .module_id').textContent = item.id  || ''
+  findElement('.module-view .module_type').textContent = item.type  || ''
+  
+  findElement('.module-view .module_repo').textContent = item.repository  || ''
+  findElement('.module-view input[name="module_repo_edit"]').value = item.repository  || ''
+
+  findElement('.module-view .module_desc').textContent = item.desc  || ''
+  findElement('.module-view textarea[name="module_desc_edit"]').value = item.desc  || ''
 }
 
 function loadPackageInfo(item){
-  if(item.packages.length){
+  if(item?.packages?.length){
     findElement('.package-view .module_latest').textContent = item.packages[0].version
     findElement('.package-view .module_count').textContent = item.packages.length
   }else{
@@ -157,6 +162,8 @@ async function loadModuleData(){
   if(moduleItem){
     loadModuleInfo(moduleItem)
     loadPackageInfo(moduleItem)
+  }else{
+    resetModuleInfo()
   }
 }
 
