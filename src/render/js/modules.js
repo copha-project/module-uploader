@@ -2,13 +2,13 @@ const moduleListDialogSelector = '.modal.module-list-dialog '
 
 function buildModuleItem({id,name,active}){
     const tpl = `<div class="item" data-id='${id}'>
-    <label class="checkbox">
-      <input type="checkbox" name='active' ${active? "checked":""}>
-      <span class='name'>${name}</span>
-      <span class='id'>${id}</span>
-    </label>
-    <button type='button' class="button is-small is-danger">删除</button>
-  </div>`
+                    <label class="checkbox">
+                    <input type="checkbox" name='active' ${active? "checked":""}>
+                    <span class='name'>${name}</span>
+                    <span class='id'>${id}</span>
+                    </label>
+                    <button type='button' class="button is-small is-danger">删除</button>
+                </div>`
     const div = document.createElement('div')
     div.innerHTML = tpl
     return div.firstChild
@@ -22,12 +22,10 @@ async function addModule(){
     }
     
     try {
-        const moduleData = await fetchRemoteModule(id)
-        console.log(moduleData);
-        return
+        const moduleData = await moduleManager.fetchRemoteModule(id)
         moduleData.token = ''
         moduleData.active = false
-        await addModule(moduleData)
+        await moduleManager.addModule(moduleData)
         loadModuleList()
     } catch (error) {
         app.showError(error.message)
@@ -42,6 +40,7 @@ function removeModule(id){
         app.showError(error.message)
     }
 }
+
 function activeModule(id){
     try {
         activeModule(id)

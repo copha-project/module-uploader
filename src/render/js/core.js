@@ -1,5 +1,5 @@
 function findElement(e) {
-    return document.querySelector(e);
+    return document.querySelector(e)
 }
 
 function findElements(e) {
