@@ -15,15 +15,15 @@ function buildModuleItem({id,name,active}){
 }
 
 async function addModule(){
-    const id = findElement(moduleListDialogSelector + '.module-id').value
-    if(!id) {
-        app.showError('no id')
+    const [id,token] = findElement(moduleListDialogSelector + '.module-id').value.split(':')
+    if(!id || !token) {
+        app.showError('module data format error')
         return
     }
     
     try {
         const moduleData = await moduleManager.fetchRemoteModule(id)
-        moduleData.token = ''
+        moduleData.token = token
         moduleData.active = false
         await moduleManager.addModule(moduleData)
         loadModuleList()

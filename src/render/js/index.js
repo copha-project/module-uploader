@@ -216,7 +216,7 @@ function quitApp(){
 }
 
 ;(async function (w) {
-  const moduleManager = new ModuleManager({host: 'https://hub.copha.net'})
+  const moduleManager = new ModuleManager({host: app.api.HOST})
   w.moduleManager = moduleManager
   await loadModuleData()
   

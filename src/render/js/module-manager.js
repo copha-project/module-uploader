@@ -124,7 +124,9 @@ ModuleManager.prototype.uploadRemotePackage = async function (module,{version,pa
 ModuleManager.prototype.fetchRemoteModule = async function(id) {
     return fetch(this.api.list + id).then(async (e) => {
       if (e.ok) {
-        return e.json()
+        const res = await e.json()
+        if(res.code !== 200) throw Error(res.msg)
+        return res.data
       }
       throw Error((await e.json()).message);
     });
