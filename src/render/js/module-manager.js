@@ -93,16 +93,17 @@ ModuleManager.prototype.reqBuilder = async function (url = '', data = {}, option
         referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
         body: JSON.stringify(data) // body data type must match "Content-Type" header
     });
-    const resData = await response.json()
-    if(resData.code) throw Error(resData.message)
-    return resData; // parses JSON response into native JavaScript objects
+    if(!response.ok) throw Error(response.statusText) // http 代码
+    const resData = await response.json()   
+    if(resData.code !== 200) throw Error(resData.msg) // 业务代码
+    return resData.data
 }
 
 ModuleManager.prototype.saveRemoteModule = async function (module, updateData){
     const reqUrl = this.api.list + module.id
-    return reqBuilder(reqUrl, updateData, {
+    return this.reqBuilder(reqUrl, updateData, {
         method: 'PUT',
-        token : module.token,
+        token : module.token
     })
 }
 
