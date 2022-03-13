@@ -5,7 +5,7 @@ function versionPatchIncrement(version){
 }
 
 async function upload() {
-  const activeModule = await moduleManager.getActiveModule()
+  const activeModule = moduleManager.getActiveModule()
   if(!activeModule) {
     app.showError("no module selected")
     return
@@ -107,7 +107,7 @@ async function upload() {
 }
 
 async function openFileSelect(e) {
-  const activeModule = await moduleManager.getActiveModule()
+  const activeModule = moduleManager.getActiveModule()
   if(!activeModule) {
     app.showError("no module selected")
     return
@@ -157,7 +157,7 @@ function loadPackageInfo(item){
 }
 
 async function loadModuleData(){
-  const moduleItem = await moduleManager.getActiveModule()
+  const moduleItem = moduleManager.getActiveModule()
   if(moduleItem){
     loadModuleInfo(moduleItem)
     loadPackageInfo(moduleItem)
@@ -174,29 +174,29 @@ function quitApp(){
   app.exit()
 }
 
-async function saveModuleInfo(e){
-  e.currentTarget.blur()
-  const repo = findElement('.module-view input[name="module_repo_edit"]').value
-  const desc = findElement('.module-view textarea[name="module_desc_edit"]').value
-
-  if(!repo || !desc) return
-  const moduleItem = await moduleManager.getActiveModule()
-  if(moduleItem.repository === repo && moduleItem.desc === desc) {
-    app.showMsg("data not change")
-    return
-  }
-  moduleManager.saveRemoteModule(moduleItem,{repository: repo,desc})
-  .then(res=>{
-    console.log(res)
-    app.showMsg(res)
-  })
-  .catch(err=>{
-    app.showError(err.message)
-  })
-}
-
-async function editModuleInfoEvent(){
-  function closeModuleInfoEdit(){
+const moduleInfoSection = {
+  saveModuleInfo: async function(e){
+    e.currentTarget.blur()
+    const repo = findElement('.module-view input[name="module_repo_edit"]').value
+    const desc = findElement('.module-view textarea[name="module_desc_edit"]').value
+  
+    if(!repo || !desc) return
+    const moduleItem = moduleManager.getActiveModule()
+    if(moduleItem.repository === repo && moduleItem.desc === desc) {
+      app.showMsg("data not change")
+      return
+    }
+    try {
+      await moduleManager.saveRemoteModule(moduleItem,{repository: repo,desc})
+      await moduleManager.syncActiveModule()
+      await loadModuleData()
+      app.showMsg("update success")
+      moduleInfoSection.closeModuleInfoEdit()
+    } catch (error) {
+      app.showError(error.message)
+    }
+  },
+  closeModuleInfoEdit: function(){
     findElement('.module-view .module-edit').classList.replace('fa-window-close','fa-pen-square')
     findElement('.module-view .module-save').style.setProperty('display','none')
     
@@ -206,10 +206,9 @@ async function editModuleInfoEvent(){
     findElement('.module-view .module_desc').style.setProperty('display','unset')
     findElement('.module-view textarea[name="module_desc_edit"]').style.setProperty('display','none')
     
-    findElement('.module-view .module-save').removeEventListener('click', saveModuleInfo)
-  }
-  
-  function openModuleInfoEdit(){
+    findElement('.module-view .module-save').removeEventListener('click', this.saveModuleInfo)
+  },
+  openModuleInfoEdit: function(){
     findElement('.module-view .module-edit').classList.replace('fa-pen-square','fa-window-close')
     findElement('.module-view .module-save').style.setProperty('display','block')
     
@@ -219,22 +218,22 @@ async function editModuleInfoEvent(){
     findElement('.module-view .module_desc').style.setProperty('display','none')
     findElement('.module-view textarea[name="module_desc_edit"]').style.setProperty('display','unset')
     
-    findElement('.module-view .module-save').addEventListener('click', saveModuleInfo)
-  }
-  
-  function moduleInfoEditIsOpen(){
+    findElement('.module-view .module-save').addEventListener('click', this.saveModuleInfo)
+  },
+  moduleInfoEditIsOpen: function(){
     return findElement('.module-view .module-edit').classList.contains('fa-window-close')
-  }
-
-  const activeModule = moduleManager.getActiveModule()
-  if(!activeModule) {
-    app.showError("no module selected")
-    return
-  }
-  if(moduleInfoEditIsOpen()){
-    closeModuleInfoEdit()
-  }else{
-    openModuleInfoEdit()
+  },
+  editModuleInfoEvent: async function(){
+    const activeModule = moduleManager.getActiveModule()
+    if(!activeModule) {
+      app.showError("no module selected")
+      return
+    }
+    if(moduleInfoSection.moduleInfoEditIsOpen()){
+      moduleInfoSection.closeModuleInfoEdit()
+    }else{
+      moduleInfoSection.openModuleInfoEdit()
+    }
   }
 }
 
@@ -247,5 +246,5 @@ async function editModuleInfoEvent(){
   findElement("#open-select-file").addEventListener("click", openFileSelect);
   findElement(".upload-view .submit").addEventListener("click", upload);
   findElement(".quit").addEventListener("click", quitApp);
-  findElement('.module-view .module-edit').addEventListener('click', editModuleInfoEvent)
+  findElement('.module-view .module-edit').addEventListener('click', moduleInfoSection.editModuleInfoEvent)
 })(window);
