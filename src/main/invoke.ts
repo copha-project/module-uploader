@@ -61,10 +61,9 @@ export default class Invoke {
     validateVersion(event:IpcMainEvent, s:string){
         return compareVersions.validate(s)
     }
-    async uploadPackage(event:IpcMainEvent, token:string, filePath:string, version:string){
+    async uploadPackage(event:IpcMainEvent, token:string, filePath:string, uploadPoint: string , version:string){
         const res = {code:1,msg:''}
         try {
-            const uploadPoint = await App.getInstance().getUploadPoint()
             // const uploadPoint = "http://127.0.0.1:3456/upload"
             // console.log(token,filePath,version,uploadPoint);
             const body = new FormData()
@@ -72,12 +71,14 @@ export default class Invoke {
             body.append('version', version)
             body.append('authorization', token)
 
-            await fetch(uploadPoint,body,{
+            await fetch(uploadPoint, body, {
                 method: "POST"
             })
             res.code = 0
 
         } catch (error) {
+            console.log('uploadPackage: ',uploadPoint,error)
+            
             res.msg = error?.message || "unknown error"
         }
         return res

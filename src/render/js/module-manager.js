@@ -1,7 +1,8 @@
 function ModuleManager(options){
     this.HOST = options.host
     this.api = {
-        list: this.HOST + "/api/v1/modules/"
+        list: this.HOST + "/api/v1/modules/",
+        uploadHost: this.HOST + '/api/v1/package_hosts/'
     }
 }
 
@@ -79,8 +80,7 @@ ModuleManager.prototype.getActiveModule = function (){
 }
 
 ModuleManager.prototype.reqBuilder = async function (url = '', data = {}, options = {}) {
-    // Default options are marked with *
-    const response = await fetch(url, {
+    const fetchOptions = {
         method: options.method || 'GET', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -90,9 +90,14 @@ ModuleManager.prototype.reqBuilder = async function (url = '', data = {}, option
             'authorization': options.token || '',
         },
         redirect: 'follow', // manual, *follow, error
-        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        body: JSON.stringify(data) // body data type must match "Content-Type" header
-    });
+        referrerPolicy: 'no-referrer'
+    }
+
+    if(Object.keys(data).length) {
+        fetchOptions.body = JSON.stringify(data)
+    }
+
+    const response = await fetch(url, fetchOptions);
     if(!response.ok) throw Error(response.statusText) // http 代码
     const resData = await response.json()   
     if(resData.code !== 200) throw Error(resData.msg) // 业务代码
@@ -110,16 +115,22 @@ ModuleManager.prototype.saveRemoteModule = async function (module, updateData){
 ModuleManager.prototype.addRemotePackage = async function (module, packageData){
     const reqUrl = this.api.list + module.id + '/packages'
     // const reqUrl = 'http://localhost:4396/api/v1/modules/'+module.name+'/packages'
-    return reqBuilder(reqUrl,packageData, {
+    return this.reqBuilder(reqUrl, packageData, {
         method: 'POST',
         token : module.token,
     })
 }
 
+ModuleManager.prototype.getUploadPoint = async function(module){
+    const hostResp = await this.reqBuilder(this.api.uploadHost + module.packageHost)
+    return hostResp.uploadPoint + '/' + module.id
+}
+
 ModuleManager.prototype.uploadRemotePackage = async function (module,{version,package}){
-    const uploadRes = await app.api.uploadPackage(module.id, module.token, package, version)
+    const uploadPoint = await this.getUploadPoint(module)
+    const uploadRes = await app.api.uploadPackage(module.token, package, uploadPoint, version)
     if(uploadRes.code!==0) throw Error(uploadRes.msg)
-    console.log(uploadRes);
+    console.log('uploadRemotePackage: ', uploadRes)
 }
 
 ModuleManager.prototype.fetchRemoteModule = async function(id) {

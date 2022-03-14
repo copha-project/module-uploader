@@ -10,9 +10,17 @@ async function upload() {
     app.showError("no module selected")
     return
   }
-  
+
+  async function closeUploadView(){
+    await moduleManager.syncActiveModule()
+    await loadModuleData()
+    closeLoading()
+  }
+  function showLoading(){
+    findElement(".module-panel .loading").style.setProperty("display", "flex")
+  }
   function closeLoading(){
-    findElement(".loading").style.setProperty("display", "none");
+    findElement(".module-panel .loading").style.setProperty("display", "none")
     findElements('.upload-progress .step').map(resetTaskView)
     const doneBtn = findElement('.upload-loading-view .button')
     doneBtn.textContent = "Cancel"
@@ -45,7 +53,7 @@ async function upload() {
     const doneBtn = findElement('.upload-loading-view .button')
     doneBtn.textContent = "Done"
     doneBtn.classList.replace('is-danger','is-success')
-    findElement(".upload-loading-view .cancel-upload").addEventListener("click", closeLoading, {once:true});
+    findElement(".upload-loading-view .cancel-upload").addEventListener("click", closeUploadView, {once:true});
   }
   async function verifyInfo(packageData){
     const stepIcon = findElement('.upload-progress .step-1')
@@ -101,7 +109,7 @@ async function upload() {
     changeToDoneView()
   } catch (error) {
     app.showError(error.message)
-    console.log(error);
+    console.log(error)
     closeLoading()
   }
 }
@@ -120,13 +128,10 @@ async function openFileSelect(e) {
   const fileInfo = await app.api.getModuleInfo(filePath)
   findElement("input[name=hashSha1]").value = fileInfo.sha1
   findElement("input[name=hashMd5]").value = fileInfo.md5
-  if(activeModule.packages.length>0){
-    findElement("input[name=moduleVer]").value = versionPatchIncrement(activeModule.packages[0].version);
+  console.log(activeModule.packages);
+  if(activeModule.packages.length > 0){
+    findElement("input[name=moduleVer]").value = versionPatchIncrement(activeModule.packages.sort((a,b)=>b.version-a.version)[0].version)
   }
-}
-
-function showLoading(){
-  findElement(".loading").style.setProperty("display", "flex");
 }
 
 function resetModuleInfo(){
@@ -242,9 +247,9 @@ const moduleInfoSection = {
   w.moduleManager = moduleManager
   await loadModuleData()
   
-  findElement(".open-module-list").addEventListener("click", showModuleListDialog);
-  findElement("#open-select-file").addEventListener("click", openFileSelect);
-  findElement(".upload-view .submit").addEventListener("click", upload);
-  findElement(".quit").addEventListener("click", quitApp);
+  findElement(".open-module-list").addEventListener("click", showModuleListDialog)
+  findElement("#open-select-file").addEventListener("click", openFileSelect)
+  findElement(".upload-view .submit").addEventListener("click", upload)
+  findElement(".quit").addEventListener("click", quitApp)
   findElement('.module-view .module-edit').addEventListener('click', moduleInfoSection.editModuleInfoEvent)
-})(window);
+})(window)
