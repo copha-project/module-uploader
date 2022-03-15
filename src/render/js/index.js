@@ -153,7 +153,7 @@ function loadModuleInfo(item){
 
 function loadPackageInfo(item){
   if(item?.packages?.length){
-    findElement('.package-view .module_latest').textContent = item.packages[0].version
+    findElement('.package-view .module_latest').textContent = item.packages.sort((a,b)=>b.version-a.version)[0].version
     findElement('.package-view .module_count').textContent = item.packages.length
   }else{
     findElement('.package-view .module_latest').textContent = 'None'
