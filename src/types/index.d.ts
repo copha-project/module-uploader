@@ -1,6 +1,5 @@
-declare type uploadPointResp = {
-    hosts: string[],
-    api: {
-        upload:string
-    }
+declare type fetchResp = {
+    code: number,
+    headers: any,
+    data: any
 }

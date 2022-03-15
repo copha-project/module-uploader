@@ -11,28 +11,27 @@ export function isUUID(s: string) {
     return validate(s)
 }
 
-export async function fetch(url:string, body?:FormData, options?:ClientRequestConstructorOptions){
+export async function fetch(url:string, {body,headers}:{body?:FormData, headers?:any}, options?:ClientRequestConstructorOptions): Promise<fetchResp>{
     return new Promise((resolve,reject)=>{
         const urlData = urlToHttpOptions(new URL(url)) as ClientRequestConstructorOptions
         const request = net.request({
             ...urlData,
-            
             ...options
         })
 
-        const resp = {
+        const resp: fetchResp = {
             code: 200,
             headers: {},
-            body: {}
+            data: {}
         }
         request.on('response', (response) => {
             resp.code = response.statusCode
             resp.headers = JSON.stringify(response.headers)
             response.on('data', (chunk) => {
                 try {
-                    resp.body = JSON.parse(Buffer.from(chunk).toString())
+                    resp.data = JSON.parse(Buffer.from(chunk).toString())
                 } catch (error) {
-                    resp.body = Buffer.from(chunk).toString()
+                    resp.data = Buffer.from(chunk).toString()
                 }
             })  
             response.on('error',(e)=>{
@@ -40,11 +39,7 @@ export async function fetch(url:string, body?:FormData, options?:ClientRequestCo
                 reject(e)
             })
             response.on('end', () => {
-                if(resp.code === 200){
-                    resolve(resp.body)
-                }else{
-                    reject(resp.body)
-                }
+                resolve(resp)
             })
         })
         request.on('abort',(e)=>{
@@ -55,6 +50,11 @@ export async function fetch(url:string, body?:FormData, options?:ClientRequestCo
             console.log('error',e);
             reject(e)
         })
+        if(headers){
+            for (const key in headers) {
+                request.setHeader(key, headers[key])
+            }
+        }
         if(body){
             const bodyHeaders = body.getHeaders()
             if(bodyHeaders['content-type']){

@@ -69,13 +69,21 @@ export default class Invoke {
             const body = new FormData()
             body.append('package', fs.readFileSync(filePath), "package.zip")
             body.append('version', version)
-            body.append('authorization', token)
 
-            await fetch(uploadPoint, body, {
+            const uploadResp = await fetch(uploadPoint, {
+                body,
+                headers: {
+                    authorization: token
+                }
+            }, {
                 method: "POST"
             })
-            res.code = 0
-
+            
+            if(uploadResp.code === 200 && uploadResp.data.code === 200){
+                res.code = 0
+            }else{
+                res.msg = uploadResp.data.msg || uploadResp.code
+            }
         } catch (error) {
             console.log('uploadPackage: ',uploadPoint,error)
             
