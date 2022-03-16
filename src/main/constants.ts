@@ -6,4 +6,4 @@ export const MessageIcons = {
     [MessageType.Error]: path.resolve(__dirname, '../assets/image/error.png')
 }
 
-export const appIcon = path.resolve(__dirname, '../assets/image/icon436x436.png')
+export const appIcon = path.resolve(__dirname, '../assets/image/icon360x360.png')
