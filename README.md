@@ -1,6 +1,10 @@
 # Copha Module Uploader
 
-A desktop client which upload copha module
+A desktop app which upload copha module
 
+![preview](./docs/preview.png)
 # How to install
-coming soon
+download app from [copha.net](https://copha.net)
+# License
+
+MIT
