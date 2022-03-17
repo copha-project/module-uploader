@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "license": "MIT",
   "main": "dist/main/index.js",
+  "description": "Copha Module Uploader",
   "scripts": {
     "start": "npm run build && electron-forge start",
     "dev": "gulp && gulp dev && cross-env NODE_ENV=development electron ./dist/dev/index.js",
@@ -67,6 +68,13 @@
             "title": "module uploader installer",
             "format": "ULFO",
             "icon": "./src/assets/build/mac/dmg/icon.png"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "CophaModuleUploader",
+            "iconUrl": "https://raw.githubusercontent.com/copha-project/module-uploader/master/src/assets/build/icon.ico"
           }
         }
       ]
