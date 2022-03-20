@@ -1,17 +1,19 @@
 import { isWin32, isUUID, fetch } from '../common'
-import { ipcMain, dialog, IpcMainInvokeEvent, IpcMainEvent, app } from 'electron'
+import { ipcMain, dialog, IpcMainInvokeEvent, IpcMainEvent, app, shell } from 'electron'
 import Utils from 'uni-utils'
 import FormData from 'form-data'
 import fs from 'fs'
 import compareVersions from 'compare-versions';
 import App from './app'
 import { showErrorMessage, showInfoMessage } from './message'
+import { updateUrl } from './constants'
 
 const CommandList: any = {
     exit: () => App.getInstance().quit(),
     openDevTools: ()=> App.getInstance().openDevTools(),
     isWin: ()=> isWin32,
     isPackaged: ()=> app.isPackaged,
+    checkUpdate: ()=> shell.openExternal(updateUrl),
     isUUID
 }
 export default class Invoke {

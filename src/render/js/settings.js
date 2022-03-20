@@ -6,6 +6,8 @@ function initEvent(){
     findElement(settingsSelector + '.open-devtools').addEventListener('click', openDevTools)
 
     findElement(settingsSelector + ' .resync').addEventListener('click', syncModuleData)
+    
+    findElement(settingsSelector + ' .check-update').addEventListener('click', checkUpdate)
 }
 
 function showSettingsDialog(){
@@ -14,6 +16,10 @@ function showSettingsDialog(){
 
 function closeSettingsDialog(){
     findElement(".modal.sys-settings").classList.remove("is-active")
+}
+
+function checkUpdate(){
+    app.checkUpdate()
 }
 
 async function syncModuleData(){

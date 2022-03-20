@@ -15,5 +15,6 @@ contextBridge.exposeInMainWorld('app', {
   },
   showError: (msg:string) => ipcRenderer.send('showError', msg),
   showMsg: (msg:string) => ipcRenderer.send('showMsg', msg),
-  openDevTools: ()=> ipcRenderer.invoke('cmd', "openDevTools")
+  openDevTools: ()=> ipcRenderer.invoke('cmd', "openDevTools"),
+  checkUpdate: ()=> ipcRenderer.invoke('cmd', "checkUpdate")
 })
